@@ -40,12 +40,14 @@ function render(){
     app.innerHTML = renderPractice(g);
   }
   saveState(GROUPS);
+  updateCountdownDisplay();
 }
 
 function renderHome(){
   const totalWords = GROUPS.reduce((s,g)=>s+g.words.length,0);
   let html = `<h1>כרטיסיות אוצר מילים</h1>
   <div class="sub">${totalWords} מילים · ${GROUPS.length} יחידות מאוחדות</div>
+  ${renderCountdownCard()}
   <div class="units-grid">`;
   GROUPS.forEach(g=>{
     const s = g.session;
