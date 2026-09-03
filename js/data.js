@@ -1,0 +1,153 @@
+// נתוני אוצר המילים המקוריים - 10 יחידות ממוצא Quizlet.
+// כל מילה = זוג [אנגלית, עברית]. הנתונים נשמרים בדיוק כפי שהם, בלי להוריד מילה.
+const RAW_UNITS = [
+{n:1, words:[
+["connect","לחבר"],["create","ליצור"],["education","חינוך"],["even","אפילו"],["exhibition","תערוכה"],
+["experience (v)","לחוות"],["factory","מפעל / בית חרושת"],["goal","מטרה"],["in order to","כדי"],["local","מקומי"],
+["location","מיקום"],["majority","רוב"],["nearby","בקרבת מקום"],["such as","כמו"],["virtually","באופן וירטואלי"],
+["amazing","מדהים"],["can't wait","לא יכול לחכות, מצפה"],["download","להוריד (קבצים)"],["drum","תוף"],["experience (n)","חוויה"],
+["fantastic","מופלא, פנטסטי"],["fashion","אופנה"],["go back","לחזור"],["latest","האחרון, החדיש ביותר"],["original","מקורי"],
+["part of","חלק מ"],["permanent","קבוע"],["record","להקליט"],["sound (v)","נשמע"],["temporary","זמני"],
+["alive","חי"],["body","גופה / גוף"],["bone","עצם"],["carpet","שטיח"],["coin","מטבע"],
+["collection","אוסף"],["combined","משולב"],["creative","יצירתי"],["earring","עגיל"],["murder (n)","רצח"],
+["murder (v)","לרצוח"],["necklace","שרשרת"],["play (n)","הצגה"],["play (v)","לשחק בהצגה/סרט"],["pleased","מרוצה"],
+["report (n)","דוח"],["report (v)","לדווח"],["search (n)","חיפוש"],["search (v)","לחפש"],["fashion victim","קורבן אופנה"],
+]},
+{n:2, words:[
+["abroad","חוץ לארץ"],["active","פעיל"],["actually","בעצם, למעשה"],["adventure","הרפתקה"],["be crazy about","להיות משוגע על"],
+["channel","ערוץ"],["communication","תקשורת"],["cooking","בישול"],["design","עיצוב"],["gym","אולם ספורט / חדר כושר"],
+["ingredients","מרכיבים"],["injure","להיפצע"],["mostly","לרוב"],["skill","מיומנות"],["so","כל כך"],
+["star","כוכב"],["affect","להשפיע על"],["comment","הערה"],["differently","באופן שונה"],["expert","מומחה"],
+["extremely","מאוד"],["go on","להמשיך"],["negative","שלילי"],["percent","אחוז"],["rather than","במקום, מאשר"],
+["simply","באופן פשוט"],["take it easy","להירגע, לנוח"],["terrible","נורא"],["traditional","מסורתי"],["absolutely","לחלוטין"],
+["act","לשחק, להופיע"],["actress","שחקנית"],["bring back","להחזיר"],["director","במאי"],["go down","לרדת"],
+["go up","לעלות"],["hand in","להגיש"],["hand out","לחלק"],["have a meeting","להיות בפגישה"],["have a talk","לקיים שיחה"],
+["have an appointment","להיות בפגישה"],["keep a secret","לשמור סוד"],["keep in touch","לשמור על קשר"],["perform","לשחק, להופיע"],["stage","במה"],
+["star (v)","לככב"],["take a deep breath","לקחת נשימה עמוקה"],["take an exam","להיבחן"],["take away","לקחת"],
+]},
+{n:3, words:[
+["be made of","עשוי מ"],["can","פחית"],["design (v)","לעצב, לתכנן"],["despite","למרות"],["dirt","אדמה"],
+["energy","אנרגיה, כוח"],["entire","כל, כולו"],["garbage","זבל, אשפה"],["loud","רועש, חזק"],["make sure","לוודא"],
+["provide","לספק"],["regular","רגיל"],["tiny","זעיר"],["underground","תת קרקעי"],["wheel","גלגל"],
+["allow","להרשות"],["around","מסביב"],["at present","כיום, בהווה"],["be supposed to","אמור ל"],["by ourselves","בעצמנו, לבדנו"],
+["communicate","לתקשר"],["each other","זה את זה"],["feel as if","להרגיש כאילו"],["generally","באופן כללי"],["get together","להיפגש"],
+["grow","לגדול"],["ill","חולה"],["lucky","בר מזל"],["swimming","שחייה"],["whenever","בכל פעם ש"],
+["airport","נמל תעופה"],["annually","מדי שנה"],["at the same time","בו זמנית"],["clearly","בצורה ברורה"],["ever since","מאז ש"],
+["gently","בעדינות"],["girlfriend","חברה"],["handbag","תיק יד"],["highway","כביש מהיר"],["household","משק בית"],
+["in time","בזמן"],["originally","במקור"],["quite a while","די הרבה זמן"],["rarely","לעיתים רחוקות"],["recently","לאחרונה"],
+["right away","מיד"],["shop assistant","מוכר בחנות"],["shopping mall","קניון"],["terribly","בצורה נוראית"],["thunderstorm","סופת רעמים"],
+]},
+{n:4, words:[
+["be unable to","לא מסוגל"],["bite","נגיסה"],["by accident","בטעות"],["century","מאה (שנים)"],["delicious","טעים מאוד"],
+["dish","צלחת, מנה"],["extra","נוסף"],["fit","להתאים"],["flour","קמח"],["fully","לגמרי, לחלוטין"],
+["have an idea","יש רעיון"],["invent","להמציא"],["roll","לגלגל"],["taste (v)","לטעום"],["terrific","מדהים"],
+["truth","אמת"],["adventurous","הרפתקן"],["appreciate","להעריך"],["beauty","יופי"],["blind","עיוור"],
+["book (v)","להזמין מקום"],["challenge","אתגר"],["dark","חשוך"],["darkness","חשיכה"],["downtown","מרכז העיר"],
+["entirely","לחלוטין"],["glove","כפפה"],["in addition","בנוסף"],["rare","נדיר"],["reach","להגיע ל"],
+["season","עונה"],["sense","חוש"],["apologize","להתנצל"],["as far as I know","עד כמה שידוע לי"],["awful","נוראי"],
+["bill","חשבון (במסעדה)"],["budget","תקציב"],["catch fire","להתלקח"],["crowded","צפוף"],["expensive","יקר"],
+["feel at home","להרגיש בבית"],["go out","לצאת לבילוי"],["help oneself","להתכבד"],["make friends with","להתיידד עם"],["pay attention","לשים לב"],
+["set the table","לערוך את השולחן"],["taste (n)","טעם"],["unfriendly","לא ידידותי"],["unimportant","לא חשוב"],["unkind","לא אדיב"],
+["unnecessary","לא נחוץ"],["unpleasant","לא נעים"],
+]},
+{n:5, words:[
+["adapt","להסתגל"],["advertisement","פרסומת"],["afraid","פוחד"],["aim (v)","לשאוף"],["argue","להתווכח"],
+["aware","מודע"],["be familiar with","להכיר"],["capable of","מסוגל ל"],["concerned","מודאג"],["disease","מחלה"],
+["encourage","לעודד"],["few","מעט"],["fight","להיאבק, להילחם"],["fortunately","למרבה המזל"],["global warming","התחממות כדור הארץ"],
+["horrible","נורא"],["insect","חרק"],["agree","להסכים"],["announce","להודיע, להכריז"],["appreciation","הוקרה"],
+["as soon as","ברגע ש"],["calendar","לוח שנה"],["challenge (v)","לאתגר"],["congratulations","מזל טוב"],["develop","לפתח, להתפתח"],
+["feel sorry for","לרחם על"],["have a plan","יש תוכנית"],["in the end","בסוף, בסופו של דבר"],["kind","טוב לב, אדיב"],["lake","אגם"],
+["of course","בוודאי, כמובן"],["poor","מסכן"],["succeed","להצליח"],["swimmer","שחיין"],["worried","מודאג"],
+["adequate","מספיק"],["advertise","לפרסם"],["agreement","הסכם"],["announcement","הודעה"],["argument","ויכוח"],
+["common","נפוץ"],["contact (n)","מגע, קשר"],["contact (v)","ליצור קשר"],["cruel","אכזרי"],["fair","בהיר"],
+["familiar","מוכר"],["hug (n)","חיבוק"],["hug (v)","לחבק"],["print (n)","הדפס"],["print (v)","להדפיס"],
+["scientific","מדעי"],["success","הצלחה"],["tie (n)","עניבה"],["tie (v)","לקשור"],["valuable","יקר ערך"],
+]},
+{n:6, words:[
+["assume","להניח"],["cause","לגרום"],["childhood","ילדות"],["confidence","ביטחון"],["deal with","להתמודד עם"],
+["feel bad about","להרגיש רע לגבי"],["friendship","חברות, ידידות"],["in fact","למעשה, בעצם"],["injury","פציעה, פגיעה"],["mind","דעה / מחשבה"],
+["minimum","מינימלי, מזערי"],["Pleased to meet you","נעים להכיר אותך"],["successful","מצליח, מוצלח"],["take away","לקחת"],["teenager","נער/נערה"],
+["that's a shame","כמה חבל"],["trend","אופנה, מגמה"],["variety","מגוון"],["accurately","במדויק"],["awake","ער"],
+["belong to","להשתייך ל / להיות חבר ב"],["beside","לצד, ליד"],["calm","רגוע"],["carry on","להמשיך"],["carry out","לבצע"],
+["come true","להתגשם, להתממש"],["complete","להשלים"],["gold","זהב"],["moment","רגע"],["one another","זה את זה"],
+["score (n)","תוצאה"],["strategy","אסטרטגיה"],["support (v)","לתמוך"],["surprise (v)","להפתיע"],["accuracy","דיוק"],
+["Are you kidding?","אתה רציני?"],["Attention!","לתשומת לבכם!"],["Come on!","נו כבר!"],["come out","לצאת"],["confident","בטוח בעצמו"],
+["get back","להשיב חזרה"],["good for you","כל הכבוד"],["hurry (somebody) up","לזרז (מישהו)"],["I suppose so","נראה לי שכן"],["leave out","לא לשתף"],
+["Look out!","זהירות!"],["look up","לבדוק, לחפש"],["minimal","מינימלי, הכי מעט"],["of course not","כמובן שלא"],["score (v)","לקלוע"],
+["try on","למדוד"],["various","מגוון"],["What if","מה אם"],["What's up?","מה קורה?"],
+]},
+{n:7, words:[
+["all day long","במשך כל היום"],["blog","בלוג"],["broken","שבור"],["career","קריירה"],["check (v)","לבדוק"],
+["crisis","משבר"],["emergency","מקרה חירום"],["essential","חיוני"],["exciting","מרגש, מלהיב"],["female","נקבה"],
+["missing","חסר, אבד"],["plenty","הרבה"],["properly","כמו שצריך"],["regularly","באופן קבוע"],["strength","כוח"],
+["truly","באמת"],["approximately","בערך"],["as soon as possible","בהקדם האפשרי"],["bite (v)","לנשוך"],["blood","דם"],
+["breathe","לנשום"],["entrance","כניסה"],["exact","מדויק, בדיוק"],["first aid","עזרה ראשונה"],["look","להביט"],
+["material","בד"],["quite","די, למדי"],["quite a lot","הרבה למדי"],["stomach","בטן"],["straight away","מיד"],
+["teenage","בגיל העשרה"],["temperature","חום"],["worry (v)","לדאוג"],["would you mind","אכפת לך?"],["approximate","משוער"],
+["breath","נשימה"],["check (n)","בדיקה"],["click","הקשה"],["closing time","שעת סגירה"],["department store","חנות כלבו"],
+["digital","דיגיטלי"],["electronic","אלקטרוני"],["entry","כניסה"],["hi-tech","היי טק"],["human being","בן אדם"],
+["printer","מדפסת"],["proper","ראוי"],["recording","הקלטה"],["social media","מדיה חברתית"],["stomach ache","כאב בטן"],
+["technological","טכנולוגי"],["traffic light","רמזור"],["virtual","וירטואלי"],["worry (n)","דאגה"],
+]},
+{n:8, words:[
+["appear","להופיע"],["arrest (n)","מעצר"],["arrest (v)","לעצור"],["attack (n)","התקפה"],["attack (v)","לתקוף"],
+["blame","להאשים"],["boyfriend","חבר"],["brave","אמיץ"],["careless","רשלן, רשלני"],["catch up with","להשיג, לתפוס"],
+["control","לשלוט ב"],["crime","פשע"],["dress (v)","להתלבש"],["escape","להימלט"],["fail","להיכשל"],
+["finally","לבסוף"],["jail","בית סוהר, כלא"],["lady","אישה, גברת"],["soldier","חייל"],["annual","שנתי"],
+["by hand","ביד"],["chance","הזדמנות"],["everyday","יומיומי"],["excited","נרגש, מתרגש"],["festival","פסטיבל"],
+["gather","להתאסף"],["jewelry","תכשיטים"],["living","חי"],["locally","באזור"],["look like","נראה ש/כמו"],
+["open","גלוי"],["style","סגנון"],["such a","כל כך"],["take it seriously","לקחת ברצינות"],["tool","כלי"],
+["used to","נהג ל"],["alter","לשנות"],["cheerful","עליז"],["criminal","עבריין"],["curious","סקרן"],
+["enormous","עצום"],["fair","הוגן"],["figure","מספר"],["gentle","עדין"],["guilty","אשם"],
+["illegal","לא חוקי"],["law","חוק"],["lawyer","עורך דין"],["link (v)","לקשר בין"],["occur","להתרחש"],
+["polite","מנומס"],["practical","מעשי"],["prison","בית סוהר, כלא"],["require","לדרוש"],["smart","חכם"],
+["trial","משפט"],
+]},
+{n:9, words:[
+["accompany","ללוות"],["actively","באופן פעיל"],["cancer","סרטן"],["click (v)","להקיש"],["comment (v)","להעיר"],
+["connection","קשר"],["direct","לכוון"],["enter","להיכנס"],["have a question","יש שאלה"],["invention","המצאה"],
+["laptop","מחשב נייד"],["obviously","מן הסתם"],["offer","להציע"],["on the way","בדרך ל"],["on time","בזמן"],
+["social","חברתי"],["user-friendly","ידידותי למשתמש"],["aim (n)","מטרה"],["appearance","הופעה"],["charge (v)","לגבות"],
+["course","קורס"],["demand (n)","דרישה, ביקוש"],["educational","חינוכי"],["grant (n)","מענק"],["perfectly","באופן מושלם"],
+["physics","פיזיקה"],["profit","רווח כספי"],["range","מבחר"],["resource","משאב"],["suggest","להציע"],
+["support (n)","תמיכה"],["supporter","תומך"],["system","מערכת"],["through","על ידי"],["volunteer (n)","מתנדב"],
+["at once","מיד"],["by heart","בעל פה"],["celebrity","ידוען"],["charge (n)","חיוב"],["demand (v)","לדרוש"],
+["detective","בלש"],["directions","הוראות הגעה"],["employer","מעסיק"],["engineer","מהנדס"],["for sale","למכירה"],
+["go well","להצליח"],["grant (v)","להעניק"],["in love","מאוהב"],["obvious","ברור"],["on purpose","בכוונה"],
+["performer","שחקן, זמר"],["prisoner","אסיר"],["scientist","מדען"],["suggestion","הצעה"],["voluntary","התנדבותי"],
+]},
+{n:10, words:[
+["be responsible for","להיות אחראי ל"],["discount","הנחה"],["guide","מדריך"],["if you like","אם תרצה"],["included","כלול"],
+["last (v)","להימשך"],["link (n)","קישור"],["look around","להביט מסביב"],["northern","צפוני"],["option","אפשרות, אופציה"],
+["section","חלק"],["southern","דרומי"],["supply (n)","אספקה"],["supply (v)","לספק"],["take a break","לעשות הפסקה"],
+["take care of","לדאוג ל"],["accurate","מדויק"],["adjust","להסתגל"],["attitude","יחס"],["bear","לסבול, לשאת"],
+["before dark","לפני החשיכה"],["dirty","מלוכלך"],["distance","מרחק"],["feel like","להרגיש כמו"],["go wrong","להשתבש"],
+["hunger","רעב"],["locate","לאתר"],["muscle","שריר"],["network","רשת"],["pronounce","להגות"],
+["rise","לקום"],["set off","לצאת לדרך"],["take up","להתחיל לעסוק ב"],["trade","מסחר"],["adjustment","הסתגלות"],
+["be off","לצאת לדרך"],["border","גבול"],["capital","עיר בירה"],["come down","לרדת"],["couldn't help it","לא יכולתי שלא"],
+["currency","מטבע"],["distant","רחוק"],["eastern","מזרחי"],["flag","דגל"],["If I were you","אם הייתי במקומך"],
+["let (somebody) know","להודיע ל..."],["pick up","להרים"],["pronunciation","הגייה"],["responsibility","אחריות"],["sounds as though","נשמע כאילו"],
+["take back","להחזיר"],["take out","להוציא"],["western","מערבי"],["Why don't you...?","למה שלא...?"],
+]},
+];
+
+// איחוד זוגות יחידות (1-2, 3-4, 5-6, 7-8, 9-10) ל-5 יחידות גדולות, בלי להוריד מילים.
+const GROUP_COLORS = ['#7c5cff','#ff8a5c','#17b978','#ff5d8f','#2fb8e0'];
+
+function buildGroups(){
+  const groups = [];
+  for(let i=0;i<RAW_UNITS.length;i+=2){
+    const a = RAW_UNITS[i], b = RAW_UNITS[i+1];
+    const label = b ? `יחידות ${a.n}-${b.n}` : `יחידה ${a.n}`;
+    const words = b ? a.words.concat(b.words) : a.words.slice();
+    groups.push({
+      id: 'g'+groups.length,
+      label,
+      words,
+      color: GROUP_COLORS[groups.length % GROUP_COLORS.length],
+      practiceCount: 0,
+      session: null,
+    });
+  }
+  return groups;
+}
