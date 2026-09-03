@@ -59,13 +59,13 @@ function renderHome(){
     }
     const dotLabel = g.label.replace('יחידות ','').replace('יחידה ','');
     html += `<div class="unit-card" style="--c:${g.color};" data-action="open" data-id="${g.id}">
-      <div class="dot">${dotLabel}</div>
+      ${renderFlameBadge(g.practiceCount, dotLabel)}
       <div class="info">
         <b>${g.label}</b>
         <div class="meta">${metaText}</div>
         <div class="progress-mini"><div style="width:${pct}%;"></div></div>
       </div>
-      <div class="badge">${renderFlameBadge(g.practiceCount)}תרגול ${g.practiceCount}</div>
+      <div class="badge">תרגול ${g.practiceCount}</div>
     </div>`;
   });
   html += `</div>`;
