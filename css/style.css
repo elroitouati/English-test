@@ -45,6 +45,7 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 
 .units-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 .unit-card{
+  position:relative;
   background:var(--panel);border-radius:18px;padding:16px 18px;
   display:flex;align-items:center;gap:14px;cursor:pointer;
   box-shadow:0 6px 18px rgba(124,92,255,0.08);
@@ -65,6 +66,37 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
   margin-top:6px;height:5px;border-radius:4px;background:var(--line);overflow:hidden;
 }
 .unit-card .progress-mini > div{height:100%;background:var(--c);}
+
+.flame-badge{
+  position:absolute;
+  top:0;left:50%;
+  width:0;height:0;
+  /* +3px מפצה על ה-border-right:6px של הכרטיס, כדי למרכז ביחס לקופסת הגבול המלאה ולא לתיבת ה-padding */
+  transform:translate(calc(-50% + 3px),-55%);
+  z-index:2;
+  pointer-events:none;
+}
+.flame-layer{
+  position:absolute;
+  top:0;left:0;
+  transform:translate(-50%,-50%);
+  transform-origin:center;
+  transition:fill 300ms ease, width 300ms ease, height 300ms ease;
+  animation:flame-flicker 1s ease-in-out infinite;
+}
+.flame-back{opacity:0.6;}
+.flame-front{opacity:1;}
+
+@keyframes flame-flicker{
+  0%{transform:translate(-50%,-50%) scale(1) rotate(0deg);}
+  25%{transform:translate(-50%,-50%) scale(1.06) rotate(-3deg);}
+  50%{transform:translate(-50%,-50%) scale(1.1) rotate(0deg);}
+  75%{transform:translate(-50%,-50%) scale(1.06) rotate(3deg);}
+  100%{transform:translate(-50%,-50%) scale(1) rotate(0deg);}
+}
+@media (prefers-reduced-motion: reduce){
+  .flame-layer{animation:none;}
+}
 
 /* practice screen */
 .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}

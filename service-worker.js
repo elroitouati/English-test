@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vocab-trainer-v4';
+const CACHE_NAME = 'vocab-trainer-v5';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,6 +6,7 @@ const APP_SHELL = [
   './js/data.js',
   './js/storage.js',
   './js/countdown.js',
+  './js/flame-badge.js',
   './js/app.js',
   './manifest.json',
   './icons/icon-192.png',
