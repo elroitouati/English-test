@@ -19,6 +19,7 @@ function newSession(group){
     flipped: false,
     seen: false, // האם התרגום נחשף לפחות פעם אחת בכרטיסייה הנוכחית
     roundLabel: 1, // מספר תת-הסבב בתוך התרגול (1 = מעבר ראשון על כל המילים)
+    history: [], // תשובות שניתנו בתת-הסבב הנוכחי, כדי לאפשר "חזור למילה הקודמת"
   };
 }
 
@@ -84,6 +85,7 @@ function renderPractice(g){
       s.roundLabel += 1;
       s.flipped = false;
       s.seen = false;
+      s.history = [];
     } else {
       // סבב שלם עבר בלי אף "לא ידעתי" - סיום תרגול מלא על היחידה
       g.practiceCount += 1;
@@ -102,6 +104,9 @@ function renderPractice(g){
       <div class="stat-pill g"><b>${s.known}</b><span>ידע</span></div>
       <div class="stat-pill r"><b>${s.toRetry}</b><span>לחזרה</span></div>
       <div class="stat-pill n"><b>${remaining}</b><span>נותרו בסבב</span></div>
+    </div>
+    <div class="undo-row">
+      <button class="undo-btn" data-action="undo" ${s.history.length===0?'disabled':''}>↩ חזור למילה הקודמת</button>
     </div>
     <div class="flashcard ${s.flipped?'flipped':''}" dir="auto" data-action="flip">
       ${s.flipped ? w[1] : w[0]}
@@ -155,9 +160,26 @@ function flipCard(){
 function answer(knew){
   const s = getGroup(curGroupId).session;
   const wordIdx = s.queue[s.pos];
+  s.history.push({wordIdx, knew});
   if(knew){ s.known += 1; }
   else { s.retry.push(wordIdx); s.toRetry += 1; }
   s.pos += 1;
+  s.flipped = false;
+  s.seen = false;
+  render();
+}
+function goBack(){
+  const s = getGroup(curGroupId).session;
+  if(!s || s.history.length === 0) return;
+  const last = s.history.pop();
+  s.pos -= 1;
+  if(last.knew){
+    s.known -= 1;
+  } else {
+    const idx = s.retry.lastIndexOf(last.wordIdx);
+    if(idx !== -1) s.retry.splice(idx, 1);
+    s.toRetry -= 1;
+  }
   s.flipped = false;
   s.seen = false;
   render();
@@ -174,6 +196,10 @@ document.getElementById('app').addEventListener('click', (e)=>{
   else if(action==='answer'){
     if(el.disabled) return;
     answer(el.dataset.know==='true');
+  }
+  else if(action==='undo'){
+    if(el.disabled) return;
+    goBack();
   }
 });
 
