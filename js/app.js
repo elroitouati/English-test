@@ -105,9 +105,6 @@ function renderPractice(g){
       <div class="stat-pill r"><b>${s.toRetry}</b><span>לחזרה</span></div>
       <div class="stat-pill n"><b>${remaining}</b><span>נותרו בסבב</span></div>
     </div>
-    <div class="undo-row">
-      <button class="undo-btn" data-action="undo" ${s.history.length===0?'disabled':''}>↩ חזור למילה הקודמת</button>
-    </div>
     <div class="flashcard ${s.flipped?'flipped':''}" dir="auto" data-action="flip">
       ${s.flipped ? w[1] : w[0]}
       <div class="tap-hint">${s.seen ? 'הקש להחלפה' : 'הקש לחשיפת התרגום'}</div>
@@ -115,6 +112,9 @@ function renderPractice(g){
     <div class="know-row">
       <button class="btn-no" ${!s.seen?'disabled':''} data-action="answer" data-know="false">✗ לא ידעתי</button>
       <button class="btn-yes" ${!s.seen?'disabled':''} data-action="answer" data-know="true">✓ ידעתי</button>
+    </div>
+    <div class="undo-row">
+      <button class="undo-btn" data-action="undo" ${s.history.length===0?'disabled':''}>↩ חזור למילה הקודמת</button>
     </div>
     ${s.roundLabel>1 ? `<div class="round-note">סבב חזרה מס׳ ${s.roundLabel} · רק על המילים שסימנת "לא ידעתי"</div>` : ''}
   `;

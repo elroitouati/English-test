@@ -103,7 +103,7 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 .back-btn{background:var(--panel);border:none;color:var(--accent);font-weight:700;font-size:0.9rem;padding:9px 14px;border-radius:12px;cursor:pointer;box-shadow:0 3px 8px rgba(124,92,255,0.08);}
 .unit-title{font-weight:800;font-size:1.05rem;}
 
-.undo-row{text-align:center;margin-bottom:12px;}
+.undo-row{text-align:center;margin-top:12px;}
 .undo-btn{
   background:var(--panel);border:none;color:var(--accent);font-weight:700;font-size:0.85rem;
   padding:8px 14px;border-radius:12px;cursor:pointer;box-shadow:0 3px 8px rgba(124,92,255,0.08);

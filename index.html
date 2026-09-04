@@ -24,7 +24,20 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      navigator.serviceWorker.register('service-worker.js').then((reg) => {
+        reg.update();
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update();
+        });
+      }).catch(() => {});
+    });
+    // כשגרסת service worker חדשה משתלטת, טוענים את הדף מחדש פעם אחת אוטומטית
+    // כדי שתמיד יעבדו על הגרסה העדכנית בלי לסגור ולפתוח את האפליקציה ידנית.
+    let reloadedForNewVersion = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (reloadedForNewVersion) return;
+      reloadedForNewVersion = true;
+      window.location.reload();
     });
   }
 </script>
