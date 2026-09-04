@@ -29,6 +29,8 @@ function getGroup(id){
 
 function ensureSession(group){
   if(!group.session) group.session = newSession(group);
+  // תאימות לאחור: התקדמות שנשמרה לפני הוספת "חזור למילה הקודמת" חסרה את השדה הזה
+  else if(!Array.isArray(group.session.history)) group.session.history = [];
 }
 
 function render(){
