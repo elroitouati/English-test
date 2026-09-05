@@ -27,20 +27,42 @@ function getGroup(id){
   return GROUPS.find(g=>g.id===id);
 }
 
+// בודק שמצב שמור (מגרסה קודמת של האפליקציה, למשל) עדיין תואם למבנה הנוכחי,
+// כדי שלעולם לא ניתקע במסך ריק בגלל שדה חסר או ערך לא תקין ממצב ישן.
+function isValidSession(s, group){
+  if(!s || typeof s !== 'object') return false;
+  if(!Array.isArray(s.queue) || !Array.isArray(s.retry) || !Array.isArray(s.history)) return false;
+  if(typeof s.pos !== 'number' || typeof s.known !== 'number' || typeof s.toRetry !== 'number' || typeof s.roundLabel !== 'number') return false;
+  if(s.pos < 0 || s.pos > s.queue.length) return false;
+  const total = group.words.length;
+  const isValidIdx = (i) => Number.isInteger(i) && i >= 0 && i < total;
+  if(!s.queue.every(isValidIdx) || !s.retry.every(isValidIdx)) return false;
+  return true;
+}
+
 function ensureSession(group){
-  if(!group.session) group.session = newSession(group);
-  // תאימות לאחור: התקדמות שנשמרה לפני הוספת "חזור למילה הקודמת" חסרה את השדה הזה
-  else if(!Array.isArray(group.session.history)) group.session.history = [];
+  if(!isValidSession(group.session, group)) group.session = newSession(group);
 }
 
 function render(){
   const app = document.getElementById('app');
-  if(curGroupId===null){
-    app.innerHTML = renderHome();
-  } else {
-    const g = getGroup(curGroupId);
-    ensureSession(g);
-    app.innerHTML = renderPractice(g);
+  try{
+    if(curGroupId===null){
+      app.innerHTML = renderHome();
+    } else {
+      const g = getGroup(curGroupId);
+      ensureSession(g);
+      app.innerHTML = renderPractice(g);
+    }
+  }catch(e){
+    // רשת הגנה אחרונה: מצב שמור פגום בכל זאת גרם לשגיאה - מתחילים סבב נקי במקום להיתקע
+    if(curGroupId !== null){
+      const g = getGroup(curGroupId);
+      if(g){ g.session = newSession(g); app.innerHTML = renderPractice(g); }
+      else { curGroupId = null; app.innerHTML = renderHome(); }
+    } else {
+      app.innerHTML = renderHome();
+    }
   }
   saveState(GROUPS);
   updateCountdownDisplay();
