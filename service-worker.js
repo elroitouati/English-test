@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vocab-trainer-v6';
+const CACHE_NAME = 'vocab-trainer-v7';
 const APP_SHELL = [
   './',
   './index.html',
@@ -29,16 +29,16 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Network-first: תמיד מנסים לשלוף גרסה עדכנית מהרשת קודם, ורק אם אין רשת
+// (אופליין) נופלים חזרה לגרסה השמורה. זה מבטיח שדחיפה חדשה תגיע מיד בפעם
+// הבאה שיש חיבור, בלי תלות בזה שמישהו יזכור לעדכן את מספר גרסת המטמון.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-        return response;
-      }).catch(() => cached);
-    })
+    fetch(event.request.url, { cache: 'no-store' }).then((response) => {
+      const copy = response.clone();
+      caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+      return response;
+    }).catch(() => caches.match(event.request))
   );
 });
