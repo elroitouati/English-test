@@ -127,6 +127,13 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 }
 .flashcard .tap-hint{position:absolute;bottom:14px;font-size:0.75rem;font-weight:400;color:var(--sub);}
 .flashcard.flipped{background:var(--bg);}
+.card-word-row{display:flex;align-items:center;justify-content:center;gap:10px;}
+.card-word{min-width:0;}
+.speak-btn{
+  background:none;border:none;font-size:1.3rem;line-height:1;cursor:pointer;
+  padding:4px;flex:none;
+}
+.speak-btn:hover{opacity:0.75;}
 
 .know-row{display:flex;gap:10px;margin-top:16px;}
 .know-row button{

@@ -130,7 +130,10 @@ function renderPractice(g){
       <div class="stat-pill n"><b>${remaining}</b><span>נותרו בסבב</span></div>
     </div>
     <div class="flashcard ${s.flipped?'flipped':''}" dir="auto" data-action="flip">
-      ${s.flipped ? w[1] : w[0]}
+      <div class="card-word-row">
+        <span class="card-word">${s.flipped ? w[1] : w[0]}</span>
+        <button class="speak-btn" data-action="speak" aria-label="השמע הגייה">🔊</button>
+      </div>
       <div class="tap-hint">${s.seen ? 'הקש להחלפה' : 'הקש לחשיפת התרגום'}</div>
     </div>
     <div class="know-row">
@@ -181,6 +184,20 @@ function flipCard(){
   if(s.flipped) s.seen = true;
   render();
 }
+function speakCurrentWord(){
+  if(!('speechSynthesis' in window)) return;
+  const g = getGroup(curGroupId);
+  const s = g.session;
+  const w = g.words[s.queue[s.pos]];
+  const rawText = s.flipped ? w[1] : w[0];
+  // מסירים הערה בסוגריים בסוף (למשל "(v)") - היא לא חלק מההגייה של המילה
+  const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const lang = s.flipped ? 'he-IL' : 'en-US';
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang;
+  window.speechSynthesis.speak(utter);
+}
 function answer(knew){
   const s = getGroup(curGroupId).session;
   const wordIdx = s.queue[s.pos];
@@ -224,6 +241,9 @@ document.getElementById('app').addEventListener('click', (e)=>{
   else if(action==='undo'){
     if(el.disabled) return;
     goBack();
+  }
+  else if(action==='speak'){
+    speakCurrentWord();
   }
 });
 
