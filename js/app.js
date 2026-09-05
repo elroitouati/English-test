@@ -130,10 +130,7 @@ function renderPractice(g){
       <div class="stat-pill n"><b>${remaining}</b><span>נותרו בסבב</span></div>
     </div>
     <div class="flashcard ${s.flipped?'flipped':''}" dir="auto" data-action="flip">
-      <div class="card-word-row">
-        <span class="card-word">${s.flipped ? w[1] : w[0]}</span>
-        <button class="speak-btn" data-action="speak" aria-label="השמע הגייה">🔊</button>
-      </div>
+      ${s.flipped ? w[1] : w[0]}
       <div class="tap-hint">${s.seen ? 'הקש להחלפה' : 'הקש לחשיפת התרגום'}</div>
     </div>
     <div class="know-row">
@@ -142,6 +139,7 @@ function renderPractice(g){
     </div>
     <div class="undo-row">
       <button class="undo-btn" data-action="undo" ${s.history.length===0?'disabled':''}>↩ חזור למילה הקודמת</button>
+      <button class="speak-btn" data-action="speak" aria-label="השמע הגייה">🔊</button>
     </div>
     ${s.roundLabel>1 ? `<div class="round-note">סבב חזרה מס׳ ${s.roundLabel} · רק על המילים שסימנת "לא ידעתי"</div>` : ''}
   `;
