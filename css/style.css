@@ -140,6 +140,11 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 }
 .flashcard .tap-hint{position:absolute;bottom:14px;font-size:0.75rem;font-weight:400;color:var(--sub);}
 .flashcard.flipped{background:var(--bg);}
+.exam-origin-tag{
+  position:absolute;top:12px;left:14px;
+  font-size:0.7rem;font-weight:600;color:var(--sub);
+  background:var(--bg);padding:3px 9px;border-radius:10px;
+}
 .speak-btn{
   background:var(--panel);border:none;color:var(--accent);font-size:1rem;line-height:1;cursor:pointer;
   padding:8px 12px;border-radius:12px;box-shadow:0 3px 8px rgba(124,92,255,0.08);

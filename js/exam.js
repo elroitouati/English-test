@@ -16,6 +16,9 @@ function initExamModule(baseGroups){
 function examWordsFlat(){
   return BASE_GROUPS.flatMap(g => g.words);
 }
+function examWordOrigins(){
+  return BASE_GROUPS.flatMap(g => g.words.map(() => g.label));
+}
 function examTotalWords(){
   return examWordsFlat().length;
 }
@@ -81,7 +84,9 @@ function renderExamScreen(){
   if(s.pos >= s.queue.length) return renderExamDone();
 
   const words = examWordsFlat();
+  const origins = examWordOrigins();
   const w = words[s.queue[s.pos]];
+  const unitLabel = origins[s.queue[s.pos]];
   const remaining = s.queue.length - s.pos;
   return `
     <div class="top-bar">
@@ -94,6 +99,7 @@ function renderExamScreen(){
       <div class="stat-pill n"><b>${remaining}</b><span>נותרו</span></div>
     </div>
     <div class="flashcard ${s.flipped?'flipped':''}" dir="auto" data-action="exam-flip">
+      <div class="exam-origin-tag">${unitLabel}</div>
       ${s.flipped ? w[1] : w[0]}
       <div class="tap-hint">${s.seen ? 'הקש להחלפה' : 'הקש לחשיפת התרגום'}</div>
     </div>
