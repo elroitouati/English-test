@@ -43,6 +43,19 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 .countdown-value{display:block;font-size:1.4rem;font-weight:800;line-height:1.1;}
 .countdown-label{display:block;font-size:0.68rem;opacity:0.85;margin-top:2px;}
 
+.exam-card{
+  display:flex;align-items:center;gap:14px;
+  background:var(--panel);border-radius:18px;padding:16px 18px;
+  margin-bottom:16px;cursor:pointer;
+  box-shadow:0 6px 18px rgba(193,18,31,0.12);
+  border:2px solid #c1121f;
+}
+.exam-card-icon{font-size:1.8rem;flex:none;}
+.exam-card-info{flex:1;}
+.exam-card-info b{display:block;font-size:1.05rem;color:var(--ink);}
+.exam-card-meta{color:var(--sub);font-size:0.82rem;margin-top:2px;}
+.exam-card-arrow{font-size:1.4rem;color:#c1121f;flex:none;}
+
 .units-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 .unit-card{
   background:var(--panel);border-radius:18px;padding:16px 18px;
