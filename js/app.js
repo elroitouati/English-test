@@ -1,5 +1,6 @@
 const GROUPS = buildGroups();
 const BASE_GROUPS_SNAPSHOT = GROUPS.slice(); // 5 היחידות המקוריות, לפני שאולי מתווספת "מתקשה בהם"
+GROUPS.push(...buildExtraGroups()); // יחידות נוספות (מחוץ לתוכנית המקורית) - לא נכנסות לבחינה הגדולה
 applySavedState(GROUPS, loadSavedState());
 initExamModule(BASE_GROUPS_SNAPSHOT);
 
@@ -90,7 +91,7 @@ function renderHome(){
       pct = Math.round((s.known / g.words.length)*100);
       metaText = `בתהליך · ${s.known}/${g.words.length} ידע`;
     }
-    const dotLabel = g.id==='hard' ? '❗' : g.label.replace('יחידות ','').replace('יחידה ','');
+    const dotLabel = g.dotLabel || g.label.replace('יחידות ','').replace('יחידה ','');
     html += `<div class="unit-card" style="--c:${g.color};" data-action="open" data-id="${g.id}">
       ${renderFlameBadge(g.practiceCount, dotLabel)}
       <div class="info">

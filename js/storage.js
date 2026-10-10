@@ -19,7 +19,7 @@ function applySavedState(groups, saved){
     if(!g){
       // קבוצה דינמית שלא קיימת מראש (כמו "מתקשה בהם") - משחזרים אותה אם יש לה רשימת מילים שמורה
       if(!Array.isArray(sg.words) || sg.words.length === 0) return;
-      g = { id: sg.id, label: sg.label || '', words: sg.words, color: sg.color || '#495057', practiceCount: 0, session: null };
+      g = { id: sg.id, label: sg.label || '', dotLabel: sg.dotLabel || '', words: sg.words, color: sg.color || '#495057', practiceCount: 0, session: null };
       groups.push(g);
     }
     if(typeof sg.practiceCount === 'number') g.practiceCount = sg.practiceCount;
@@ -32,6 +32,7 @@ function saveState(groups){
     groups: groups.map(g=>({
       id: g.id,
       label: g.label,
+      dotLabel: g.dotLabel,
       color: g.color,
       words: g.words,
       practiceCount: g.practiceCount,

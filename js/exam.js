@@ -148,7 +148,7 @@ function renderExamDone(){
 function upsertHardGroup(unknownWords){
   let g = GROUPS.find(x => x.id === HARD_GROUP_ID);
   if(!g){
-    g = { id: HARD_GROUP_ID, label: 'מתקשה בהם', words: [], color: HARD_GROUP_COLOR, practiceCount: 0, session: null };
+    g = { id: HARD_GROUP_ID, label: 'מתקשה בהם', dotLabel: '❗', words: [], color: HARD_GROUP_COLOR, practiceCount: 0, session: null };
     GROUPS.push(g);
   }
   g.words = unknownWords.slice();
