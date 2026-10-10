@@ -1,10 +1,7 @@
 const GROUPS = buildGroups();
-const BASE_GROUPS_SNAPSHOT = GROUPS.slice(); // 5 היחידות המקוריות, לפני שאולי מתווספת "מתקשה בהם"
-GROUPS.push(...buildExtraGroups()); // יחידות נוספות (מחוץ לתוכנית המקורית) - לא נכנסות לבחינה הגדולה
 applySavedState(GROUPS, loadSavedState());
-initExamModule(BASE_GROUPS_SNAPSHOT);
 
-let curGroupId = null; // מזהה היחידה/מסך פעיל: null = בית, '__exam__' = בחינה גדולה, אחרת מזהה יחידה
+let curGroupId = null; // מזהה היחידה/מסך פעיל: null = בית, אחרת מזהה יחידה
 
 function shuffle(arr){
   const a = arr.slice();
@@ -52,8 +49,6 @@ function render(){
   try{
     if(curGroupId===null){
       app.innerHTML = renderHome();
-    } else if(curGroupId==='__exam__'){
-      app.innerHTML = renderExamScreen();
     } else {
       const g = getGroup(curGroupId);
       ensureSession(g);
@@ -61,10 +56,7 @@ function render(){
     }
   }catch(e){
     // רשת הגנה אחרונה: מצב שמור פגום בכל זאת גרם לשגיאה - מתחילים סבב נקי במקום להיתקע
-    if(curGroupId==='__exam__'){
-      examSession = newExamSession();
-      app.innerHTML = renderExamScreen();
-    } else if(curGroupId !== null){
+    if(curGroupId !== null){
       const g = getGroup(curGroupId);
       if(g){ g.session = newSession(g); app.innerHTML = renderPractice(g); }
       else { curGroupId = null; app.innerHTML = renderHome(); }
@@ -73,15 +65,12 @@ function render(){
     }
   }
   saveState(GROUPS);
-  updateCountdownDisplay();
 }
 
 function renderHome(){
   const totalWords = GROUPS.reduce((s,g)=>s+g.words.length,0);
   let html = `<h1>כרטיסיות אוצר מילים</h1>
-  <div class="sub">${totalWords} מילים · ${GROUPS.length} יחידות מאוחדות</div>
-  ${renderCountdownCard()}
-  ${renderExamEntryCard()}
+  <div class="sub">${totalWords} מילים · ${GROUPS.length} יחידות</div>
   <div class="units-grid">`;
   GROUPS.forEach(g=>{
     const s = g.session;
@@ -251,20 +240,6 @@ document.getElementById('app').addEventListener('click', (e)=>{
   }
   else if(action==='speak'){
     speakCurrentWord();
-  }
-  else if(action==='open-exam') openExam();
-  else if(action==='open-hard') openHardGroup();
-  else if(action==='exam-flip') examFlip();
-  else if(action==='exam-answer'){
-    if(el.disabled) return;
-    examAnswer(el.dataset.know==='true');
-  }
-  else if(action==='exam-undo'){
-    if(el.disabled) return;
-    examGoBack();
-  }
-  else if(action==='exam-speak'){
-    examSpeak();
   }
 });
 

@@ -23,39 +23,6 @@ body{
 h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 .sub{color:var(--sub);font-size:0.88rem;margin-bottom:18px;}
 
-.countdown-card{
-  background:linear-gradient(135deg,var(--accent),#6a46ff);
-  border-radius:20px;
-  padding:16px 14px;
-  margin-bottom:16px;
-  color:#fff;
-  box-shadow:0 10px 24px rgba(124,92,255,0.25);
-}
-.countdown-title{font-size:0.85rem;font-weight:700;opacity:0.92;margin-bottom:10px;text-align:center;}
-.countdown-numbers{display:flex;justify-content:center;gap:10px;}
-.countdown-unit{
-  background:rgba(255,255,255,0.16);
-  border-radius:12px;
-  padding:8px 10px;
-  min-width:52px;
-  text-align:center;
-}
-.countdown-value{display:block;font-size:1.4rem;font-weight:800;line-height:1.1;}
-.countdown-label{display:block;font-size:0.68rem;opacity:0.85;margin-top:2px;}
-
-.exam-card{
-  display:flex;align-items:center;gap:14px;
-  background:var(--panel);border-radius:18px;padding:16px 18px;
-  margin-bottom:16px;cursor:pointer;
-  box-shadow:0 6px 18px rgba(193,18,31,0.12);
-  border:2px solid #c1121f;
-}
-.exam-card-icon{font-size:1.8rem;flex:none;}
-.exam-card-info{flex:1;}
-.exam-card-info b{display:block;font-size:1.05rem;color:var(--ink);}
-.exam-card-meta{color:var(--sub);font-size:0.82rem;margin-top:2px;}
-.exam-card-arrow{font-size:1.4rem;color:#c1121f;flex:none;}
-
 .units-grid{display:grid;grid-template-columns:1fr;gap:12px;}
 .unit-card{
   background:var(--panel);border-radius:18px;padding:16px 18px;
@@ -140,11 +107,6 @@ h1{font-size:1.35rem;margin:4px 0 2px;font-weight:800;}
 }
 .flashcard .tap-hint{position:absolute;bottom:14px;font-size:0.75rem;font-weight:400;color:var(--sub);}
 .flashcard.flipped{background:var(--bg);}
-.exam-origin-tag{
-  position:absolute;top:12px;left:14px;
-  font-size:0.7rem;font-weight:600;color:var(--sub);
-  background:var(--bg);padding:3px 9px;border-radius:10px;
-}
 .speak-btn{
   background:var(--panel);border:none;color:var(--accent);font-size:1rem;line-height:1;cursor:pointer;
   padding:8px 12px;border-radius:12px;box-shadow:0 3px 8px rgba(124,92,255,0.08);
