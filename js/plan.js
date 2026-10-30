@@ -26,7 +26,7 @@ const STUDY_PLAN = [
     { id: 'tue-2', text: 'חוברת עמ׳ <bdi>16-19</bdi> ו-<bdi>26-27</bdi> (אוצר מילים)' },
     { id: 'tue-3', text: 'כתיבה: <bdi>10-15</bdi> משפטים עם המילים הכי קשות, כל משפט בזמן אחר' },
     { id: 'tue-4', text: 'הבנת הנקרא: לקרוא שוב את הטקסטים של יחידה <bdi>1</bdi> בספר' },
-    { id: 'tue-5', text: 'סבב אחרון על שלוש היחידות באפליקציה' },
+    { id: 'tue-5', text: 'בחינה גדולה על כל <bdi>104</bdi> המילים, ואז לתרגל את "מתקשה בהם"', exam: true },
   ]},
   { date: '2026-11-04', title: 'רביעי 4.11', subtitle: 'יום המבחן', tasks: [
     { id: 'wed-1', text: 'בבוקר: סבב מהיר על שלוש היחידות באפליקציה' },
@@ -128,6 +128,7 @@ function renderPlanScreen(){
             <span class="task-text">${t.text}</span>
           </button>
           ${t.unit ? `<button class="task-open pressable" data-action="open" data-id="${t.unit}">לתרגול</button>` : ''}
+          ${t.exam ? `<button class="task-open pressable" data-action="open-exam">לבחינה</button>` : ''}
         </li>`;
       });
       html += `</ul>`;

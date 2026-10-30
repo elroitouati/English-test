@@ -1,5 +1,7 @@
 const GROUPS = buildGroups();
+const BASE_GROUPS_SNAPSHOT = GROUPS.slice(); // יחידות הלימוד, לפני שאולי מתווספת "מתקשה בהם"
 applySavedState(GROUPS, loadSavedState());
+initExamModule(BASE_GROUPS_SNAPSHOT);
 
 let curGroupId = null; // מזהה היחידה/מסך פעיל: null = בית, אחרת מזהה יחידה
 
@@ -54,6 +56,8 @@ function render(){
       app.innerHTML = renderHome();
     } else if(curGroupId==='__plan__'){
       app.innerHTML = renderPlanScreen();
+    } else if(curGroupId==='__exam__'){
+      app.innerHTML = renderExamScreen();
     } else {
       const g = getGroup(curGroupId);
       ensureSession(g);
@@ -61,7 +65,10 @@ function render(){
     }
   }catch(e){
     // רשת הגנה אחרונה: מצב שמור פגום בכל זאת גרם לשגיאה - מתחילים סבב נקי במקום להיתקע
-    if(curGroupId !== null && curGroupId !== '__plan__'){
+    if(curGroupId==='__exam__'){
+      examSession = newExamSession();
+      app.innerHTML = renderExamScreen();
+    } else if(curGroupId !== null && curGroupId !== '__plan__'){
       const g = getGroup(curGroupId);
       if(g){ g.session = newSession(g); app.innerHTML = renderPractice(g); }
       else { curGroupId = null; app.innerHTML = renderHome(); }
@@ -81,18 +88,19 @@ function render(){
 }
 
 function renderHome(){
-  const totalWords = GROUPS.reduce((s,g)=>s+g.words.length,0);
+  const totalWords = BASE_GROUPS_SNAPSHOT.reduce((s,g)=>s+g.words.length,0);
   const planCard = renderPlanCard();
   let html = `
   <header class="home-head">
     <bdi class="eyebrow">Mindset Plus · Unit 1</bdi>
     <h1>אוצר מילים למבחן</h1>
-    <p class="lede"><bdi>${totalWords}</bdi> מילים · <bdi>${GROUPS.length}</bdi> יחידות</p>
+    <p class="lede"><bdi>${totalWords}</bdi> מילים · <bdi>${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות</p>
   </header>
   <section class="bento${planCard ? '' : ' bento-single'}">
     ${renderCountdownCard()}
     ${planCard}
   </section>
+  ${renderExamEntryCard()}
   <h2 class="section-title">יחידות</h2>
   <div class="unit-list">`;
   GROUPS.forEach(g=>{
@@ -292,6 +300,18 @@ document.getElementById('app').addEventListener('click', (e)=>{
     speakCurrentWord();
   }
   else if(action==='open-plan') openPlan();
+  else if(action==='open-exam') openExam();
+  else if(action==='open-hard') openHardGroup();
+  else if(action==='exam-flip') examFlip();
+  else if(action==='exam-answer'){
+    if(el.disabled) return;
+    examAnswer(el.dataset.know==='true');
+  }
+  else if(action==='exam-undo'){
+    if(el.disabled) return;
+    examGoBack();
+  }
+  else if(action==='exam-speak') examSpeak();
   else if(action==='plan-toggle') togglePlanTask(el.dataset.task);
 });
 

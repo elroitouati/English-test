@@ -15,8 +15,12 @@ function loadSavedState(){
 function applySavedState(groups, saved){
   if(!saved || !Array.isArray(saved.groups)) return;
   saved.groups.forEach(sg=>{
-    // יחידות שכבר לא קיימות בקוד (למשל יחידות ישנות שהוסרו) מתעלמים מהן
-    const g = groups.find(x=>x.id===sg.id);
+    let g = groups.find(x=>x.id===sg.id);
+    // יחידה דינמית (כמו "מתקשה בהם") נבנית מהמילים ששמרנו; יחידות ישנות שהוסרו מהקוד מתעלמים מהן
+    if(!g && sg.dynamic && Array.isArray(sg.words) && sg.words.length > 0){
+      g = { id: sg.id, label: sg.label || '', dotLabel: sg.dotLabel || '', dynamic: true, words: sg.words, practiceCount: 0, session: null };
+      groups.push(g);
+    }
     if(!g) return;
     if(typeof sg.practiceCount === 'number') g.practiceCount = sg.practiceCount;
     if(sg.session) g.session = sg.session;
@@ -29,6 +33,7 @@ function saveState(groups){
       id: g.id,
       practiceCount: g.practiceCount,
       session: g.session,
+      ...(g.dynamic ? { dynamic: true, label: g.label, dotLabel: g.dotLabel, words: g.words } : {}),
     })),
   };
   try{

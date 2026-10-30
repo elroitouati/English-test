@@ -6,6 +6,7 @@ const ICON_PATHS = {
   x: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   undo: '<path d="M15 8.5h-6a4.5 4.5 0 0 0 0 9h3"/><path d="M12 5l3.5 3.5L12 12"/>',
   speaker: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+  stack: '<rect x="4" y="8.5" width="12.5" height="11" rx="2"/><path d="M8 5.5h10a2 2 0 0 1 2 2V16"/>',
   restart: '<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/>',
 };
 
