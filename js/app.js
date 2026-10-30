@@ -49,6 +49,8 @@ function render(){
   try{
     if(curGroupId===null){
       app.innerHTML = renderHome();
+    } else if(curGroupId==='__plan__'){
+      app.innerHTML = renderPlanScreen();
     } else {
       const g = getGroup(curGroupId);
       ensureSession(g);
@@ -73,6 +75,7 @@ function renderHome(){
   let html = `<h1>כרטיסיות אוצר מילים</h1>
   <div class="sub">${totalWords} מילים · ${GROUPS.length} יחידות</div>
   ${renderCountdownCard()}
+  ${renderPlanCard()}
   <div class="units-grid">`;
   GROUPS.forEach(g=>{
     const s = g.session;
@@ -243,6 +246,8 @@ document.getElementById('app').addEventListener('click', (e)=>{
   else if(action==='speak'){
     speakCurrentWord();
   }
+  else if(action==='open-plan') openPlan();
+  else if(action==='plan-toggle') togglePlanTask(el.dataset.task);
 });
 
 render();
