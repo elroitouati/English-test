@@ -44,6 +44,9 @@ function ensureSession(group){
   if(!isValidSession(group.session, group)) group.session = newSession(group);
 }
 
+let lastScreen = undefined; // כדי להריץ אנימציית כניסה רק כשעוברים מסך, לא בכל עדכון
+let cardAnim = ''; // 'flip' | 'next' - איך הכרטיסייה הבאה נכנסת
+
 function render(){
   const app = document.getElementById('app');
   try{
@@ -58,46 +61,67 @@ function render(){
     }
   }catch(e){
     // רשת הגנה אחרונה: מצב שמור פגום בכל זאת גרם לשגיאה - מתחילים סבב נקי במקום להיתקע
-    if(curGroupId !== null){
+    if(curGroupId !== null && curGroupId !== '__plan__'){
       const g = getGroup(curGroupId);
       if(g){ g.session = newSession(g); app.innerHTML = renderPractice(g); }
       else { curGroupId = null; app.innerHTML = renderHome(); }
     } else {
+      curGroupId = null;
       app.innerHTML = renderHome();
     }
   }
+  const screen = curGroupId === null ? 'home' : curGroupId;
+  app.dataset.screen = curGroupId === null ? 'home' : curGroupId === '__plan__' ? 'plan' : 'practice';
+  app.classList.toggle('screen-enter', screen !== lastScreen);
+  if(screen !== lastScreen) window.scrollTo(0, 0);
+  lastScreen = screen;
+  cardAnim = '';
   saveState(GROUPS);
   updateCountdownDisplay();
 }
 
 function renderHome(){
   const totalWords = GROUPS.reduce((s,g)=>s+g.words.length,0);
-  let html = `<h1>כרטיסיות אוצר מילים</h1>
-  <div class="sub">${totalWords} מילים · ${GROUPS.length} יחידות</div>
-  ${renderCountdownCard()}
-  ${renderPlanCard()}
-  <div class="units-grid">`;
+  const planCard = renderPlanCard();
+  let html = `
+  <header class="home-head">
+    <bdi class="eyebrow">Mindset Plus · Unit 1</bdi>
+    <h1>אוצר מילים למבחן</h1>
+    <p class="lede"><bdi>${totalWords}</bdi> מילים · <bdi>${GROUPS.length}</bdi> יחידות</p>
+  </header>
+  <section class="bento${planCard ? '' : ' bento-single'}">
+    ${renderCountdownCard()}
+    ${planCard}
+  </section>
+  <h2 class="section-title">יחידות</h2>
+  <div class="unit-list">`;
   GROUPS.forEach(g=>{
     const s = g.session;
-    let metaText = `${g.words.length} מילים`;
-    let pct = 0;
+    let meta = `<bdi>${g.words.length}</bdi> מילים`;
+    let meter = '';
     if(s){
-      pct = Math.round((s.known / g.words.length)*100);
-      metaText = `בתהליך · ${s.known}/${g.words.length} ידע`;
+      const pct = Math.round((s.known / g.words.length)*100);
+      meta = `בתהליך · ידעת <bdi>${s.known}/${g.words.length}</bdi>`;
+      meter = `<span class="meter"><span style="width:${pct}%"></span></span>`;
     }
-    const dotLabel = g.dotLabel || g.label.replace('יחידות ','').replace('יחידה ','');
-    html += `<div class="unit-card" style="--c:${g.color};" data-action="open" data-id="${g.id}">
-      ${renderFlameBadge(g.practiceCount, dotLabel)}
-      <div class="info">
-        <b>${g.label}</b>
-        <div class="meta">${metaText}</div>
-        <div class="progress-mini"><div style="width:${pct}%;"></div></div>
-      </div>
-      <div class="badge">תרגול ${g.practiceCount}</div>
-    </div>`;
+    html += `<button class="unit pressable" data-action="open" data-id="${g.id}">
+      ${renderFlameBadge(g.practiceCount, g.dotLabel)}
+      <span class="unit-body">
+        <bdi class="unit-name">${g.label}</bdi>
+        <span class="unit-meta">${meta}</span>
+        ${meter}
+      </span>
+      <span class="chip">תרגול <bdi>${g.practiceCount}</bdi></span>
+    </button>`;
   });
   html += `</div>`;
   return html;
+}
+
+// מפריד את סימון חלק הדיבר בסוף המילה (למשל "(n, v)") כדי להציג אותו קטן יותר
+function splitPos(word){
+  const m = word.match(/^(.*?)\s*(\((?:n|v|adj|adv)(?:,\s*(?:n|v|adj|adv))*\))$/);
+  return m ? { main: m[1], pos: m[2] } : { main: word, pos: '' };
 }
 
 function renderPractice(g){
@@ -122,46 +146,64 @@ function renderPractice(g){
   const wordIdx = s.queue[s.pos];
   const w = g.words[wordIdx];
   const remaining = s.queue.length - s.pos;
+  const goodPct = (s.pos - s.toRetry) / s.queue.length * 100;
+  const badPct = s.toRetry / s.queue.length * 100;
+  let face;
+  if(s.flipped){
+    face = `<span class="ic-word ic-word-he">${w[1]}</span>`;
+  } else {
+    const { main, pos } = splitPos(w[0]);
+    face = `<span class="ic-word" dir="ltr">${main}${pos ? ` <span class="ic-pos">${pos}</span>` : ''}</span>`;
+  }
   return `
-    <div class="top-bar">
-      <button class="back-btn" data-action="home">← היחידות</button>
-      <div class="unit-title">${g.label}</div>
+    <header class="topbar">
+      <button class="back-btn pressable" data-action="home">${icon('back')}<span>יחידות</span></button>
+      <bdi class="topbar-title">${g.label}</bdi>
+    </header>
+    <div class="round">
+      <div class="round-bar" aria-hidden="true">
+        <span class="seg-good" style="width:${goodPct}%"></span><span class="seg-bad" style="width:${badPct}%"></span>
+      </div>
+      <div class="round-stats">
+        <span class="stat stat-good"><b>${s.known}</b> ידעתי</span>
+        <span class="stat stat-bad"><b>${s.toRetry}</b> לחזרה</span>
+        <span class="stat stat-left"><b>${remaining}</b> נותרו</span>
+      </div>
     </div>
-    <div class="stat-row">
-      <div class="stat-pill g"><b>${s.known}</b><span>ידע</span></div>
-      <div class="stat-pill r"><b>${s.toRetry}</b><span>לחזרה</span></div>
-      <div class="stat-pill n"><b>${remaining}</b><span>נותרו בסבב</span></div>
+    ${s.roundLabel>1 ? `<p class="round-chip">סבב חזרה <bdi>${s.roundLabel}</bdi> · רק המילים שסימנת "לא ידעתי"</p>` : ''}
+    <button class="index-card${s.flipped ? ' is-back' : ''}" data-action="flip" ${cardAnim ? `data-anim="${cardAnim}"` : ''} aria-label="הפוך את הכרטיסייה">
+      <span class="ic-head">
+        <span class="ic-side">${s.flipped ? 'תרגום' : 'English'}</span>
+        <bdi class="ic-count">${s.pos + 1}/${s.queue.length}</bdi>
+      </span>
+      ${face}
+      <span class="ic-hint">${s.seen ? '' : 'הקש כדי לראות את התרגום'}</span>
+    </button>
+    <div class="answer-row">
+      <button class="btn btn-bad pressable" ${!s.seen?'disabled':''} data-action="answer" data-know="false">${icon('x')}<span>לא ידעתי</span></button>
+      <button class="btn btn-good pressable" ${!s.seen?'disabled':''} data-action="answer" data-know="true">${icon('check')}<span>ידעתי</span></button>
     </div>
-    <div class="flashcard ${s.flipped?'flipped':''}" dir="auto" data-action="flip">
-      ${s.flipped ? w[1] : w[0]}
-      <div class="tap-hint">${s.seen ? 'הקש להחלפה' : 'הקש לחשיפת התרגום'}</div>
+    <div class="tool-row">
+      <button class="btn-quiet pressable" data-action="undo" ${s.history.length===0?'disabled':''}>${icon('undo')}<span>חזור למילה הקודמת</span></button>
+      <button class="icon-btn pressable" data-action="speak" aria-label="השמע הגייה">${icon('speaker')}</button>
     </div>
-    <div class="know-row">
-      <button class="btn-no" ${!s.seen?'disabled':''} data-action="answer" data-know="false">✗ לא ידעתי</button>
-      <button class="btn-yes" ${!s.seen?'disabled':''} data-action="answer" data-know="true">✓ ידעתי</button>
-    </div>
-    <div class="undo-row">
-      <button class="undo-btn" data-action="undo" ${s.history.length===0?'disabled':''}>↩ חזור למילה הקודמת</button>
-      <button class="speak-btn" data-action="speak" aria-label="השמע הגייה">🔊</button>
-    </div>
-    ${s.roundLabel>1 ? `<div class="round-note">סבב חזרה מס׳ ${s.roundLabel} · רק על המילים שסימנת "לא ידעתי"</div>` : ''}
   `;
 }
 
 function renderDone(g){
   g.session = null;
   return `
-    <div class="top-bar">
-      <button class="back-btn" data-action="home">← היחידות</button>
-      <div class="unit-title">${g.label}</div>
-    </div>
-    <div class="done-screen">
-      <div class="big">🎉</div>
-      <h2>ידעת את כל המילים ביחידה!</h2>
-      <p>זה תרגול מספר ${g.practiceCount} על היחידה הזאת.</p>
-      <button data-action="restart" data-id="${g.id}">עוד תרגול על היחידה</button>
-      <button class="secondary" data-action="home">חזרה לרשימת היחידות</button>
-    </div>
+    <header class="topbar">
+      <button class="back-btn pressable" data-action="home">${icon('back')}<span>יחידות</span></button>
+      <bdi class="topbar-title">${g.label}</bdi>
+    </header>
+    <section class="done-screen">
+      <span class="done-mark">${icon('check')}</span>
+      <h2>ידעת את כל המילים ביחידה</h2>
+      <p>זה תרגול מספר <bdi>${g.practiceCount}</bdi> על היחידה הזאת.</p>
+      <button class="btn btn-primary pressable" data-action="restart" data-id="${g.id}">${icon('restart')}<span>עוד תרגול על היחידה</span></button>
+      <button class="btn btn-secondary pressable" data-action="home">חזרה ליחידות</button>
+    </section>
   `;
 }
 
@@ -183,6 +225,7 @@ function flipCard(){
   const s = getGroup(curGroupId).session;
   s.flipped = !s.flipped;
   if(s.flipped) s.seen = true;
+  cardAnim = 'flip';
   render();
 }
 function speakCurrentWord(){
@@ -208,6 +251,7 @@ function answer(knew){
   s.pos += 1;
   s.flipped = false;
   s.seen = false;
+  cardAnim = 'next';
   render();
 }
 function goBack(){
@@ -224,6 +268,7 @@ function goBack(){
   }
   s.flipped = false;
   s.seen = false;
+  cardAnim = 'next';
   render();
 }
 

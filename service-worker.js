@@ -1,8 +1,9 @@
-const CACHE_NAME = 'vocab-trainer-v8';
+const CACHE_NAME = 'vocab-trainer-v9';
 const APP_SHELL = [
   './',
   './index.html',
   './css/style.css',
+  './js/icons.js',
   './js/data.js',
   './js/storage.js',
   './js/countdown.js',
@@ -35,6 +36,7 @@ self.addEventListener('activate', (event) => {
 // הבאה שיש חיבור, בלי תלות בזה שמישהו יזכור לעדכן את מספר גרסת המטמון.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  if (new URL(event.request.url).origin !== self.location.origin) return;
   event.respondWith(
     fetch(event.request.url, { cache: 'no-store' }).then((response) => {
       const copy = response.clone();

@@ -5,7 +5,6 @@ const UNITS = [
     id: 'review-part-1',
     label: 'Review - Part 1',
     dotLabel: 'P1',
-    color: '#7c5cff',
     words: [
       ["ancient (adj)","עתיק"],
       ["article (n)","מאמר, כתבה"],
@@ -68,7 +67,6 @@ const UNITS = [
     id: 'review-part-2',
     label: 'Review - Part 2',
     dotLabel: 'P2',
-    color: '#17b978',
     words: [
       ["adjective (n)","שם תואר"],
       ["adverb (n)","תואר הפועל"],
@@ -113,8 +111,7 @@ const UNITS = [
   {
     id: 'speak-your-mind',
     label: 'Speak Your Mind',
-    dotLabel: '🗣',
-    color: '#ff5d8f',
+    dotLabel: 'SYM',
     words: [
       ["advantage (n)","יתרון"],
       ["disadvantage (n)","חיסרון"],
