@@ -19,21 +19,21 @@ function icon(name, cls){
   return `<svg class="icon${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
 }
 
-// הלוגו: דף מבחן עם סימוני וי וחותמת A+. full=true לאייקון האפליקציה (רקע מלא, בלי פינות)
+// הלוגו: דף מבחן עם סימוני וי בעט אדום וחותמת A+, על רקע אדום. full=true לאייקון האפליקציה (רקע מלא, בלי פינות)
 function logoSvg(full){
   const rows = [26, 33, 40].map((y, i) => `
-      <rect x="23" y="${y - 2.6}" width="5.2" height="5.2" rx="1.2" fill="none" stroke="rgba(22,26,43,0.35)" stroke-width="1.2"/>
-      ${i < 2 ? `<path d="M23.9 ${y}l1.5 1.5 2.8-3.2" fill="none" stroke="#1E8E5A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
-      <line x1="31" y1="${y}" x2="${i === 1 ? 38 : 41}" y2="${y}" stroke="rgba(22,26,43,0.22)" stroke-width="2" stroke-linecap="round"/>`).join('');
+      <rect x="23" y="${y - 2.6}" width="5.2" height="5.2" rx="1.2" fill="none" stroke="rgba(30,23,23,0.32)" stroke-width="1.2"/>
+      ${i < 2 ? `<path d="M23.9 ${y}l1.5 1.5 2.8-3.2" fill="none" stroke="#C8202F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
+      <line x1="31" y1="${y}" x2="${i === 1 ? 38 : 41}" y2="${y}" stroke="rgba(30,23,23,0.2)" stroke-width="2" stroke-linecap="round"/>`).join('');
   return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect width="64" height="64" rx="${full ? 0 : 15}" fill="#2747D9"/>
+    <rect width="64" height="64" rx="${full ? 0 : 15}" fill="#C8202F"/>
     <g transform="rotate(-6 32 31)">
-      <rect x="19" y="12" width="26" height="36" rx="3.5" fill="#FFFEFB"/>
-      <line x1="23" y1="18.5" x2="35" y2="18.5" stroke="rgba(22,26,43,0.55)" stroke-width="2.2" stroke-linecap="round"/>
+      <rect x="19" y="12" width="26" height="36" rx="3.5" fill="#FFFDFB"/>
+      <line x1="23" y1="18.5" x2="35" y2="18.5" stroke="rgba(30,23,23,0.6)" stroke-width="2.2" stroke-linecap="round"/>
       ${rows}
     </g>
-    <circle cx="43" cy="20" r="8.5" fill="#D33B3B"/>
-    <text x="43" y="23" direction="ltr" unicode-bidi="bidi-override" text-anchor="middle" font-family="Rubik, system-ui, sans-serif" font-size="8.5" font-weight="700" fill="#FFFFFF">A+</text>
+    <circle cx="43" cy="20" r="8.5" fill="#FFFDFB" stroke="#8E1420" stroke-width="1.4"/>
+    <text x="43" y="23" direction="ltr" unicode-bidi="bidi-override" text-anchor="middle" font-family="Rubik, system-ui, sans-serif" font-size="8.5" font-weight="700" fill="#C8202F">A+</text>
   </svg>`;
 }
 

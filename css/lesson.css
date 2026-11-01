@@ -1,16 +1,16 @@
 /* Lesson page. Builds on the tokens in style.css.
-   Two tenses get two codes everywhere: Simple = ink blue (the accent), Progressive = amber. */
+   Two tenses get two codes everywhere: Simple = red (the accent), Progressive = plum. */
 :root{
   --simple:      var(--accent);
   --simple-soft: var(--accent-soft);
-  --prog:        #B45309;
-  --prog-soft:   rgba(180,83,9,0.11);
+  --prog:        #7B2D8E;
+  --prog-soft:   rgba(123,45,142,0.10);
   --r-xs: 6px;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --prog:      #F5B25C;
-    --prog-soft: rgba(245,178,92,0.14);
+    --prog:      #D49BE6;
+    --prog-soft: rgba(212,155,230,0.14);
   }
 }
 

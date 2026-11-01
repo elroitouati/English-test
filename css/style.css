@@ -1,31 +1,32 @@
 /* ===== Tokens ===== */
+/* English red on cream paper. Red = the brand ("red pen"); orange = wrong / not yet; green = right. */
 :root{
-  --bg:            #F6F3EC;
-  --surface:       #FFFEFB;
-  --sunken:        #EFEBE2;
-  --border:        rgba(22,26,43,0.10);
-  --border-strong: rgba(22,26,43,0.18);
-  --text-1:        #161A2B;
-  --text-2:        rgba(22,26,43,0.66);
-  --text-3:        rgba(22,26,43,0.44);
+  --bg:            #F7F3EE;
+  --surface:       #FFFDFB;
+  --sunken:        #F0EAE3;
+  --border:        rgba(40,24,24,0.10);
+  --border-strong: rgba(40,24,24,0.18);
+  --text-1:        #1E1717;
+  --text-2:        rgba(30,23,23,0.68);
+  --text-3:        rgba(30,23,23,0.45);
 
-  --accent:        #2747D9;
-  --accent-soft:   rgba(39,71,217,0.10);
-  --on-accent:     #F7F8FF;
-  --hero-bg:       #2747D9;
-  --hero-fg:       #F7F8FF;
+  --accent:        #C8202F;
+  --accent-soft:   rgba(200,32,47,0.09);
+  --on-accent:     #FFF8F7;
+  --hero-bg:       #B81C2B;
+  --hero-fg:       #FFF8F7;
 
   --good:          #1E8E5A;
   --good-soft:     rgba(30,142,90,0.12);
-  --bad:           #D33B3B;
-  --bad-soft:      rgba(211,59,59,0.10);
+  --bad:           #D9480F;
+  --bad-soft:      rgba(217,72,15,0.10);
 
-  --card:          #FFFEFB;
-  --card-back:     #FBF8F0;
-  --card-rule:     rgba(39,71,217,0.12);
-  --card-margin:   rgba(211,59,59,0.50);
+  --card:          #FFFDFB;
+  --card-back:     #FDF6F1;
+  --card-rule:     rgba(30,23,23,0.08);
+  --card-margin:   rgba(200,32,47,0.55);
 
-  --elev: 0 1px 2px rgba(22,26,43,0.04), 0 8px 24px rgba(22,26,43,0.06);
+  --elev: 0 1px 2px rgba(40,24,24,0.05), 0 8px 24px rgba(40,24,24,0.06);
 
   --r-sm: 12px;
   --r-md: 16px;
@@ -37,30 +38,30 @@
 
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:            #0F1117;
-    --surface:       #171A22;
-    --sunken:        #12141B;
+    --bg:            #131012;
+    --surface:       #1C1719;
+    --sunken:        #171315;
     --border:        rgba(255,255,255,0.09);
     --border-strong: rgba(255,255,255,0.16);
-    --text-1:        #EEF0F6;
-    --text-2:        rgba(238,240,246,0.68);
-    --text-3:        rgba(238,240,246,0.44);
+    --text-1:        #F4EEEE;
+    --text-2:        rgba(244,238,238,0.68);
+    --text-3:        rgba(244,238,238,0.44);
 
-    --accent:        #93A6FF;
-    --accent-soft:   rgba(147,166,255,0.13);
-    --on-accent:     #0F1117;
-    --hero-bg:       #24317A;
-    --hero-fg:       #EEF0F6;
+    --accent:        #FF7B7B;
+    --accent-soft:   rgba(255,123,123,0.14);
+    --on-accent:     #1A0E10;
+    --hero-bg:       #7E1A24;
+    --hero-fg:       #F8EDEE;
 
     --good:          #4CC38A;
     --good-soft:     rgba(76,195,138,0.14);
-    --bad:           #FF7B7B;
-    --bad-soft:      rgba(255,123,123,0.13);
+    --bad:           #FF9A5C;
+    --bad-soft:      rgba(255,154,92,0.14);
 
-    --card:          #1B1E28;
-    --card-back:     #1E2230;
-    --card-rule:     rgba(147,166,255,0.09);
-    --card-margin:   rgba(255,123,123,0.40);
+    --card:          #201A1C;
+    --card-back:     #261E21;
+    --card-rule:     rgba(255,255,255,0.06);
+    --card-margin:   rgba(255,123,123,0.45);
 
     --elev: none;
   }
@@ -122,7 +123,7 @@ bdi{unicode-bidi:isolate;}
 /* Brand header */
 .brand{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
 .brand-mark{flex:none;width:56px;height:56px;display:block;}
-.brand-mark svg{display:block;width:100%;height:100%;border-radius:15px;box-shadow:0 6px 16px rgba(39,71,217,0.25);}
+.brand-mark svg{display:block;width:100%;height:100%;border-radius:15px;box-shadow:0 6px 16px rgba(184,28,43,0.28);}
 .brand-text{min-width:0;}
 .brand h1{font-size:28px;font-weight:600;line-height:1.15;}
 
@@ -400,7 +401,7 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
 .ds.past{background:transparent;}
 .ds.today{border-color:var(--accent);}
 .ds.today .ds-day{color:var(--accent);}
-.ds.exam .ds-num{color:var(--bad);font-weight:600;}
+.ds.exam .ds-num{color:var(--accent);font-weight:600;}
 .ds.on{background:var(--accent);border-color:var(--accent);}
 .ds.on .ds-day, .ds.on .ds-num, .ds.on .ds-mark{color:var(--on-accent);}
 
