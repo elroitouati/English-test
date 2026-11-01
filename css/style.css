@@ -452,6 +452,10 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
   background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;
 }
 
+.task-where{
+  flex:none;display:inline-flex;align-items:center;min-height:32px;padding:0 10px;border-radius:var(--r-sm);
+  border:1px dashed var(--border-strong);color:var(--text-2);font-size:13px;font-weight:600;
+}
 .tips{margin:12px 0 0;padding:8px 12px;border-radius:var(--r-sm);background:var(--sunken);}
 .tip{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:15px;}
 .tip dt{color:var(--text-2);}

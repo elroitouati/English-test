@@ -13,28 +13,30 @@ const STUDY_DAYS = [
   ]},
   { date: '2026-10-31', short: 'ש׳', num: '31.10', title: 'שבת 31.10', rest: true },
   { date: '2026-11-01', short: 'א׳', num: '1.11', title: 'ראשון 1.11', subtitle: 'הווה', tasks: [
-    { id: 'sun-1', text: 'שיעור: <bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi> (ובספר עמ׳ <bdi>226-227</bdi>)', act: linkAct('lesson.html#present/learn', 'לשיעור') },
-    { id: 'sun-2', text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק) + תרגול דקדוק הווה', act: linkAct('lesson.html#present/grammar', 'לתרגול') },
-    { id: 'sun-3', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים) + תרגול מילים', act: linkAct('lesson.html#words/vocab', 'לתרגול') },
+    { id: 'sun-1', text: 'שיעור: <bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi> (אותם כללים כמו בספר עמ׳ <bdi>226-227</bdi>)', act: linkAct('lesson.html#present/learn', 'לשיעור') },
+    { id: 'sun-2', text: 'תרגול דקדוק הווה באפליקציה (<bdi>20</bdi> שאלות)', act: linkAct('lesson.html#present/grammar', 'לתרגול') },
+    { id: 'sun-2w', text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק)', where: 'בחוברת' },
+    { id: 'sun-3', text: 'תרגול מילים במשפטים באפליקציה (<bdi>20</bdi> שאלות)', act: linkAct('lesson.html#words/vocab', 'לתרגול') },
+    { id: 'sun-3w', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים)', where: 'בחוברת' },
     { id: 'sun-4', text: 'שוב <bdi>Review - Part 1</bdi>, עד שהכול נקי', act: unitAct('review-part-1') },
     { id: 'sun-5', text: 'סבב ראשון על <bdi>Review - Part 2</bdi>', act: unitAct('review-part-2') },
   ]},
   { date: '2026-11-02', short: 'ב׳', num: '2.11', title: 'שני 2.11', subtitle: 'עבר', tasks: [
     { id: 'mon-1', text: 'שיעור: <bdi>Past Simple</bdi> מול <bdi>Past Progressive</bdi> (דפי חזרה עמ׳ <bdi>12</bdi>)', act: linkAct('lesson.html#past/learn', 'לשיעור') },
-    { id: 'mon-r13', text: 'דף חזרה <bdi>5</bdi>, עמ׳ <bdi>13</bdi>: בחירת הזמן הנכון + <bdi>when / while</bdi>', act: linkAct('lesson.html#past/review', 'לדף') },
-    { id: 'mon-r14', text: 'דפי חזרה עמ׳ <bdi>14</bdi>: השלמת פעלים + משפטים משלך', act: linkAct('lesson.html#past/review', 'לדף') },
-    { id: 'mon-2', text: 'חוברת עמ׳ <bdi>20-22</bdi> (דקדוק)' },
-    { id: 'mon-3', text: 'חוברת עמ׳ <bdi>12-15</bdi> (אוצר מילים)' },
+    { id: 'mon-r13', text: 'דף חזרה <bdi>5</bdi>, עמ׳ <bdi>13</bdi>: בחירת הזמן הנכון + <bdi>when / while</bdi> (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/review', 'לדף') },
+    { id: 'mon-r14', text: 'דפי חזרה עמ׳ <bdi>14</bdi>: השלמת פעלים + משפטים משלך (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/review', 'לדף') },
+    { id: 'mon-2', text: 'חוברת עמ׳ <bdi>20-22</bdi> (דקדוק)', where: 'בחוברת' },
+    { id: 'mon-3', text: 'חוברת עמ׳ <bdi>12-15</bdi> (אוצר מילים)', where: 'בחוברת' },
     { id: 'mon-4', text: '<bdi>Review - Part 2</bdi> עד שהכול נקי, ועוד סבב קצר על <bdi>Speak Your Mind</bdi>', act: unitAct('review-part-2') },
-    { id: 'tue-4', text: 'הבנת הנקרא: לקרוא שוב את הטקסטים של יחידה <bdi>1</bdi> בספר' },
+    { id: 'tue-4', text: 'הבנת הנקרא: לקרוא שוב את הטקסטים של יחידה <bdi>1</bdi>', where: 'בספר' },
   ]},
   { date: '2026-11-03', short: 'ג׳', num: '3.11', title: 'שלישי 3.11', subtitle: 'יום אחרון: שאלות בעבר וחזרה על הכול', tasks: [
-    { id: 'tue-r17', text: 'שאלות בעבר: חלק 6 בשיעור + דף חזרה <bdi>7</bdi>, עמ׳ <bdi>16-17</bdi>', act: linkAct('lesson.html#past/learn', 'לשיעור') },
-    { id: 'tue-r18', text: 'דפי חזרה עמ׳ <bdi>18</bdi>: שאלות כן/לא + שאלות מידע', act: linkAct('lesson.html#past/review', 'לדף') },
-    { id: 'tue-1', text: 'חוברת עמ׳ <bdi>28-29</bdi> (תרגול שמערבב את ארבעת הזמנים)' },
-    { id: 'tue-2', text: 'חוברת עמ׳ <bdi>16-19</bdi> ו-<bdi>26-27</bdi> (אוצר מילים)' },
+    { id: 'tue-r17', text: 'שאלות בעבר: חלק 6 בשיעור + דף חזרה <bdi>7</bdi>, עמ׳ <bdi>16-17</bdi> (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/learn', 'לשיעור') },
+    { id: 'tue-r18', text: 'דפי חזרה עמ׳ <bdi>18</bdi>: שאלות כן/לא + שאלות מידע (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/review', 'לדף') },
+    { id: 'tue-1', text: 'חוברת עמ׳ <bdi>28-29</bdi> (תרגול שמערבב את ארבעת הזמנים)', where: 'בחוברת' },
+    { id: 'tue-2', text: 'חוברת עמ׳ <bdi>16-19</bdi> ו-<bdi>26-27</bdi> (אוצר מילים)', where: 'בחוברת' },
     { id: 'tue-5', text: 'בחינה גדולה על כל <bdi>104</bdi> המילים, ואז "מתקשה בהם" עד שהכול נקי', act: { type: 'exam' } },
-    { id: 'tue-3', text: 'כתיבה: <bdi>10</bdi> משפטים עם המילים הכי קשות, כל משפט בזמן אחר' },
+    { id: 'tue-3', text: 'כתיבה: <bdi>10</bdi> משפטים עם המילים הכי קשות, כל משפט בזמן אחר', where: 'במחברת' },
     { id: 'wed-2', text: 'לסיום: לעבור על מילות הסימן של ארבעת הזמנים (למטה)' },
   ], tips: [
     ['always, usually, every day', 'Present Simple'],
@@ -131,7 +133,7 @@ function renderTaskRow(v){
       <span class="check">${icon('check')}</span>
       <span class="task-body"><span class="task-text">${t.text}</span>${tag}</span>
     </button>
-    ${renderTaskAction(t.act)}
+    ${t.act ? renderTaskAction(t.act) : t.where ? `<span class="task-where">${t.where}</span>` : ''}
   </li>`;
 }
 
