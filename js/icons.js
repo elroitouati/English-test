@@ -54,7 +54,6 @@ function renderTabbar(active){
   const items = [
     ['home', 'index.html#home', 'target', 'הכנה'],
     ['lessons', 'lesson.html', 'book', 'שיעורים'],
-    ['cards', 'index.html#cards', 'stack', 'כרטיסיות'],
   ];
   return items.map(([id, href, ic, label]) =>
     `<a class="tb-item${id === active ? ' on' : ''}" href="${href}"${id === active ? ' aria-current="page"' : ''}><span class="tb-icon">${icon(ic)}</span><span>${label}</span></a>`).join('');

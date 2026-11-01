@@ -695,8 +695,8 @@ REVIEW_SETS.forEach(set => set.items.forEach((it, i) => {
 /* ---------- Quiz engine ---------- */
 const SCORES_KEY = 'lessonScores_v1';
 const quizzes = {
-  'present-grammar': { title: 'תרגול דקדוק: הווה', source: GRAMMAR_ITEMS, next: ['#present/vocab', 'לתרגול מילים'] },
-  'present-vocab':   { title: 'תרגול אוצר מילים', source: VOCAB_ITEMS, next: ['#past/learn', 'לשיעור עבר'] },
+  'present-grammar': { title: 'תרגול דקדוק: הווה', source: GRAMMAR_ITEMS, next: ['#past/learn', 'לשיעור עבר'] },
+  'present-vocab':   { title: 'תרגול אוצר מילים במשפטים', source: VOCAB_ITEMS, next: ['#words/cards', 'לכרטיסיות'] },
 };
 REVIEW_SETS.forEach((set, i) => {
   const nxt = REVIEW_SETS[i + 1];
@@ -904,24 +904,61 @@ function afterAnswer(){
   if(next && window.matchMedia('(pointer: fine)').matches) next.focus({ preventScroll: true });
 }
 
+/* ---------- Vocabulary: flashcard units (practice opens in the app screen) ---------- */
+function renderWordCards(){
+  const groups = buildGroups();
+  applySavedState(groups, loadSavedState());
+  const total = UNITS.reduce((s, u) => s + u.words.length, 0);
+  let exam = null;
+  try{ exam = JSON.parse(localStorage.getItem('examSession_v2')); }catch(e){}
+  const examMeta = exam && Array.isArray(exam.queue) && exam.queue.length === total && exam.pos > 0
+    ? `בתהליך · <bdi>${exam.pos}/${total}</bdi>` : `כל <bdi>${total}</bdi> המילים מכל היחידות, ברצף אחד`;
+  return `
+    <p class="ls-text">כל המילים מעמ׳ <bdi>32</bdi> בספר. מתרגלים כל יחידה עד שהכול נקי, ובסוף עושים בחינה גדולה על הכול.</p>
+    <div class="home-rows">
+      <a class="exam-row pressable" href="index.html#practice/__exam__">
+        <span class="exam-icon">${icon('stack')}</span>
+        <span class="unit-body"><span class="unit-name">בחינה גדולה</span><span class="unit-meta">${examMeta}</span></span>
+        <span class="row-go">${icon('forward')}</span>
+      </a>
+    </div>
+    <h2 class="section-title">יחידות</h2>
+    <div class="unit-list">${groups.map(g => {
+      const s = g.session;
+      let meta = `<bdi>${g.words.length}</bdi> מילים`, meter = '';
+      if(s){
+        meta = `בתהליך · ידעת <bdi>${s.known}/${g.words.length}</bdi>`;
+        meter = `<span class="meter"><span style="width:${Math.round(s.known / g.words.length * 100)}%"></span></span>`;
+      }
+      return `<a class="unit pressable" href="index.html#practice/${g.id}" data-id="${g.id}">
+        ${renderFlameBadge(g.practiceCount, g.dotLabel)}
+        <span class="unit-body"><bdi class="unit-name">${g.label}</bdi><span class="unit-meta">${meta}</span>${meter}</span>
+        <span class="chip">תרגול <bdi>${g.practiceCount}</bdi></span>
+      </a>`;
+    }).join('')}</div>`;
+}
+
 /* ---------- Page: routing, nav, review list ---------- */
 const TOPICS = {
-  present: { label: 'הווה', en: 'Present', tabs: [['learn', 'שיעור'], ['grammar', 'דקדוק'], ['vocab', 'מילים']] },
+  present: { label: 'הווה', en: 'Present', tabs: [['learn', 'שיעור'], ['grammar', 'דקדוק']] },
   past:    { label: 'עבר', en: 'Past', tabs: [['learn', 'שיעור'], ['review', 'דפי חזרה']] },
+  words:   { label: 'מילים', en: 'Vocabulary', tabs: [['cards', 'כרטיסיות'], ['vocab', 'תרגול במשפטים']] },
 };
 
 function parseRoute(){
   let h = location.hash.slice(1);
-  if(['learn', 'grammar', 'vocab'].includes(h)) h = `present/${h}`;
+  if(['learn', 'grammar'].includes(h)) h = `present/${h}`;
+  if(h === 'vocab' || h === 'present/vocab') h = 'words/vocab';
   const [t, tab, set] = h.split('/');
   const topic = TOPICS[t] ? t : 'present';
-  const validTab = TOPICS[topic].tabs.some(x => x[0] === tab) ? tab : 'learn';
+  const validTab = TOPICS[topic].tabs.some(x => x[0] === tab) ? tab : TOPICS[topic].tabs[0][0];
   const validSet = topic === 'past' && validTab === 'review' && REVIEW_SETS.some(s => s.id === set) ? set : null;
   return { topic, tab: validTab, set: validSet };
 }
 function currentQuizKey(){
   const r = parseRoute();
-  if(r.topic === 'present' && (r.tab === 'grammar' || r.tab === 'vocab')) return `present-${r.tab}`;
+  if(r.topic === 'present' && r.tab === 'grammar') return 'present-grammar';
+  if(r.topic === 'words' && r.tab === 'vocab') return 'present-vocab';
   if(r.set) return r.set;
   return null;
 }
@@ -929,7 +966,7 @@ function currentQuizKey(){
 function renderNav(r){
   return `
     <div class="topic-switch" role="tablist" aria-label="נושא">
-      ${Object.entries(TOPICS).map(([id, t]) => `<a class="topic${id === r.topic ? ' on' : ''}" href="#${id}/learn" role="tab" aria-selected="${id === r.topic}">${t.label}<bdi class="topic-en">${t.en}</bdi></a>`).join('')}
+      ${Object.entries(TOPICS).map(([id, t]) => `<a class="topic${id === r.topic ? ' on' : ''}" href="#${id}/${t.tabs[0][0]}" role="tab" aria-selected="${id === r.topic}">${t.label}<bdi class="topic-en">${t.en}</bdi></a>`).join('')}
     </div>
     <nav class="tabs tabs-${TOPICS[r.topic].tabs.length}" role="tablist" aria-label="חלקי השיעור">
       ${TOPICS[r.topic].tabs.map(([id, label], i) => `<a class="tab${id === r.tab ? ' on' : ''}" href="#${r.topic}/${id}" role="tab" aria-selected="${id === r.tab}"><span class="tab-num">${i + 1}</span>${label}</a>`).join('')}
@@ -960,6 +997,7 @@ function renderPage(keepScroll){
   const panel = document.getElementById('panel');
   let html;
   if(r.tab === 'learn') html = r.topic === 'past' ? renderPastLearn() : renderPresentLearn();
+  else if(r.topic === 'words' && r.tab === 'cards') html = renderWordCards();
   else if(r.topic === 'past' && r.tab === 'review' && !r.set) html = renderReviewList();
   else {
     const key = currentQuizKey();

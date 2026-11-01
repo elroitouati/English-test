@@ -56,26 +56,6 @@ function newExamSession(){
   };
 }
 
-function renderExamEntryCard(){
-  const total = examTotalWords();
-  let meta = `כל <bdi>${total}</bdi> המילים מכל היחידות, ברצף אחד`;
-  let meter = '';
-  if(examSession){
-    meta = `בתהליך · <bdi>${examSession.pos}/${total}</bdi>`;
-    meter = `<span class="meter"><span style="width:${Math.round(examSession.pos / total * 100)}%"></span></span>`;
-  }
-  return `
-    <button class="exam-row pressable" data-action="open-exam">
-      <span class="exam-icon">${icon('stack')}</span>
-      <span class="unit-body">
-        <span class="unit-name">בחינה גדולה</span>
-        <span class="unit-meta">${meta}</span>
-        ${meter}
-      </span>
-      <span class="row-go">${icon('forward')}</span>
-    </button>`;
-}
-
 function openExam(){
   rememberReturn();
   if(!isValidExamSession(examSession)) examSession = newExamSession();
@@ -223,6 +203,6 @@ function examSpeak(){
   const s = examSession;
   const w = examWordsFlat()[s.queue[s.pos]];
   const rawText = s.flipped ? w[1] : w[0];
-  const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').replace(/[()]/g, '').trim();
   speakText(text, s.flipped ? 'he-IL' : 'en-US');
 }

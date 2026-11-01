@@ -3,9 +3,13 @@ const BASE_GROUPS_SNAPSHOT = GROUPS.slice(); // יחידות הלימוד, לפ�
 applySavedState(GROUPS, loadSavedState());
 initExamModule(BASE_GROUPS_SNAPSHOT);
 
-// מסך פעיל: null = הכנה (בית), '__cards__' = כרטיסיות, '__exam__' = בחינה גדולה, אחרת מזהה יחידה
+// הכרטיסיות עברו לדף השיעורים; קישור ישן ל-#cards מפנה לשם
+if(location.hash === '#cards') location.replace('lesson.html#words/cards');
+
+// מסך פעיל: null = הכנה (בית), '__exam__' = בחינה גדולה, אחרת מזהה יחידה.
+// תרגול שנפתח מדף השיעורים מגיע עם #practice/<id>, והחזרה ממנו היא לשיעורים.
 let curGroupId = screenFromHash();
-let returnScreen = curGroupId; // לאן חוזרים מתרגול: הכנה או כרטיסיות
+let returnScreen = curGroupId ? 'lessons' : null;
 
 function shuffle(arr){
   const a = arr.slice();
@@ -52,13 +56,20 @@ let lastScreen = undefined; // כדי להריץ אנימציית כניסה ר�
 let cardAnim = ''; // 'flip' | 'next' - איך הכרטיסייה הבאה נכנסת
 
 function screenFromHash(){
-  return location.hash === '#cards' ? '__cards__' : null;
+  const m = location.hash.match(/^#practice\/(.+)$/);
+  if(!m) return null;
+  const id = decodeURIComponent(m[1]);
+  if(id === '__exam__'){
+    if(!isValidExamSession(examSession)) examSession = newExamSession();
+    return id;
+  }
+  return getGroup(id) ? id : null;
 }
 function backLabel(){
-  return returnScreen === '__cards__' ? 'כרטיסיות' : 'הכנה';
+  return returnScreen === 'lessons' ? 'שיעורים' : 'הכנה';
 }
 function rememberReturn(){
-  if(curGroupId === null || curGroupId === '__cards__') returnScreen = curGroupId;
+  if(curGroupId === null) returnScreen = null;
 }
 
 function render(){
@@ -66,8 +77,6 @@ function render(){
   try{
     if(curGroupId===null){
       app.innerHTML = renderHome();
-    } else if(curGroupId==='__cards__'){
-      app.innerHTML = renderCards();
     } else if(curGroupId==='__exam__'){
       app.innerHTML = renderExamScreen();
     } else {
@@ -90,10 +99,10 @@ function render(){
     }
   }
   const screen = curGroupId === null ? 'home' : curGroupId;
-  const kind = curGroupId === null ? 'home' : curGroupId === '__cards__' ? 'cards' : 'practice';
+  const kind = curGroupId === null ? 'home' : 'practice';
   app.dataset.screen = kind;
   document.body.dataset.screen = kind;
-  document.getElementById('tabbar').innerHTML = renderTabbar(kind === 'cards' ? 'cards' : 'home');
+  document.getElementById('tabbar').innerHTML = renderTabbar('home');
   app.classList.toggle('screen-enter', screen !== lastScreen);
   if(screen !== lastScreen) window.scrollTo(0, 0);
   lastScreen = screen;
@@ -122,7 +131,7 @@ function renderExamMap(){
     </${o.href ? 'a' : o.action ? 'button' : 'div'}>`;
   return `<div class="exam-map">
     ${tile({ icon: 'stack', name: 'אוצר מילים', stat: `<span class="map-int">${words}</span> מילים`, sub: 'כל המילים בעמ׳ <bdi>32</bdi> בספר',
-      meter: practiced / BASE_GROUPS_SNAPSHOT.length * 100, progress: `<bdi>${practiced}/${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות תורגלו`, href: '#cards' })}
+      meter: practiced / BASE_GROUPS_SNAPSHOT.length * 100, progress: `<bdi>${practiced}/${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות תורגלו`, href: 'lesson.html#words/cards' })}
     ${tile({ icon: 'book', name: 'דקדוק', stat: '<span class="map-int">4</span> זמנים', sub: 'הווה ועבר, <bdi>Simple</bdi> ו-<bdi>Progressive</bdi>',
       meter: grammarDone / grammarKeys.length * 100, progress: `<bdi>${grammarDone}/${grammarKeys.length}</bdi> תרגולים הושלמו`, href: 'lesson.html' })}
     ${tile({ icon: 'doc', name: 'הבנת הנקרא', stat: 'טקסט חדש', sub: 'על הנושא והמילים של היחידה',
@@ -164,40 +173,6 @@ function renderHome(){
   ${renderExamMap()}
   <h2 class="section-title">איך מתכוננים: התוכנית שלך</h2>
   ${renderStudyCenter()}`;
-}
-
-function renderUnitList(){
-  return `<div class="unit-list">${GROUPS.map(g=>{
-    const s = g.session;
-    let meta = `<bdi>${g.words.length}</bdi> מילים`;
-    let meter = '';
-    if(s){
-      const pct = Math.round((s.known / g.words.length)*100);
-      meta = `בתהליך · ידעת <bdi>${s.known}/${g.words.length}</bdi>`;
-      meter = `<span class="meter"><span style="width:${pct}%"></span></span>`;
-    }
-    return `<button class="unit pressable" data-action="open" data-id="${g.id}">
-      ${renderFlameBadge(g.practiceCount, g.dotLabel)}
-      <span class="unit-body">
-        <bdi class="unit-name">${g.label}</bdi>
-        <span class="unit-meta">${meta}</span>
-        ${meter}
-      </span>
-      <span class="chip">תרגול <bdi>${g.practiceCount}</bdi></span>
-    </button>`;
-  }).join('')}</div>`;
-}
-
-function renderCards(){
-  const totalWords = BASE_GROUPS_SNAPSHOT.reduce((s,g)=>s+g.words.length,0);
-  return `
-  <header class="page-head">
-    <h1>כרטיסיות</h1>
-    <p class="lede"><bdi>${totalWords}</bdi> מילים מעמ׳ <bdi>32</bdi> · <bdi>${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות</p>
-  </header>
-  <div class="home-rows">${renderExamEntryCard()}</div>
-  <h2 class="section-title">יחידות</h2>
-  ${renderUnitList()}`;
 }
 
 // מפריד את סימון חלק הדיבר בסוף המילה (למשל "(n, v)") כדי להציג אותו קטן יותר
@@ -295,7 +270,11 @@ function openGroup(id){
   render();
 }
 function goHome(){
-  curGroupId = returnScreen;
+  if(returnScreen === 'lessons'){
+    location.href = 'lesson.html#words/cards';
+    return;
+  }
+  curGroupId = null;
   render();
 }
 function restartGroup(id){
@@ -317,7 +296,7 @@ function speakCurrentWord(){
   const w = g.words[s.queue[s.pos]];
   const rawText = s.flipped ? w[1] : w[0];
   // מסירים הערה בסוגריים בסוף (למשל "(v)") - היא לא חלק מההגייה של המילה
-  const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').replace(/[()]/g, '').trim();
   speakText(text, s.flipped ? 'he-IL' : 'en-US');
 }
 function answer(knew){
@@ -387,14 +366,14 @@ document.getElementById('app').addEventListener('click', (e)=>{
 
 // כפתור "חזור" של אנדרואיד: סוגר תרגול פתוח במקום לצאת מהמסך
 window.appBack = function(){
-  if(curGroupId === null || curGroupId === '__cards__') return false;
+  if(curGroupId === null) return false;
   goHome();
   return true;
 };
 
 window.addEventListener('hashchange', () => {
   curGroupId = screenFromHash();
-  returnScreen = curGroupId;
+  returnScreen = curGroupId ? 'lessons' : null;
   render();
 });
 

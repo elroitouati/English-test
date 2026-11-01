@@ -15,7 +15,7 @@ const STUDY_DAYS = [
   { date: '2026-11-01', short: 'א׳', num: '1.11', title: 'ראשון 1.11', subtitle: 'הווה', tasks: [
     { id: 'sun-1', text: 'שיעור: <bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi> (ובספר עמ׳ <bdi>226-227</bdi>)', act: linkAct('lesson.html#present/learn', 'לשיעור') },
     { id: 'sun-2', text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק) + תרגול דקדוק הווה', act: linkAct('lesson.html#present/grammar', 'לתרגול') },
-    { id: 'sun-3', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים) + תרגול מילים', act: linkAct('lesson.html#present/vocab', 'לתרגול') },
+    { id: 'sun-3', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים) + תרגול מילים', act: linkAct('lesson.html#words/vocab', 'לתרגול') },
     { id: 'sun-4', text: 'שוב <bdi>Review - Part 1</bdi>, עד שהכול נקי', act: unitAct('review-part-1') },
     { id: 'sun-5', text: 'סבב ראשון על <bdi>Review - Part 2</bdi>', act: unitAct('review-part-2') },
   ]},
@@ -25,28 +25,24 @@ const STUDY_DAYS = [
     { id: 'mon-r14', text: 'דפי חזרה עמ׳ <bdi>14</bdi>: השלמת פעלים + משפטים משלך', act: linkAct('lesson.html#past/review', 'לדף') },
     { id: 'mon-2', text: 'חוברת עמ׳ <bdi>20-22</bdi> (דקדוק)' },
     { id: 'mon-3', text: 'חוברת עמ׳ <bdi>12-15</bdi> (אוצר מילים)' },
-    { id: 'mon-4', text: '<bdi>Review - Part 2</bdi> עד שהכול נקי', act: unitAct('review-part-2') },
-    { id: 'mon-5', text: 'עוד סבב על <bdi>Speak Your Mind</bdi>', act: unitAct('speak-your-mind') },
+    { id: 'mon-4', text: '<bdi>Review - Part 2</bdi> עד שהכול נקי, ועוד סבב קצר על <bdi>Speak Your Mind</bdi>', act: unitAct('review-part-2') },
+    { id: 'tue-4', text: 'הבנת הנקרא: לקרוא שוב את הטקסטים של יחידה <bdi>1</bdi> בספר' },
   ]},
-  { date: '2026-11-03', short: 'ג׳', num: '3.11', title: 'שלישי 3.11', subtitle: 'שאלות בעבר + חזרה כללית', tasks: [
-    { id: 'tue-r16', text: 'שאלות בעבר: חלק 6 בשיעור עבר (דפי חזרה עמ׳ <bdi>16</bdi>)', act: linkAct('lesson.html#past/learn', 'לשיעור') },
-    { id: 'tue-r17', text: 'דף חזרה <bdi>7</bdi>, עמ׳ <bdi>17</bdi>: בחירה + סידור מילים לשאלה', act: linkAct('lesson.html#past/review', 'לדף') },
+  { date: '2026-11-03', short: 'ג׳', num: '3.11', title: 'שלישי 3.11', subtitle: 'יום אחרון: שאלות בעבר וחזרה על הכול', tasks: [
+    { id: 'tue-r17', text: 'שאלות בעבר: חלק 6 בשיעור + דף חזרה <bdi>7</bdi>, עמ׳ <bdi>16-17</bdi>', act: linkAct('lesson.html#past/learn', 'לשיעור') },
     { id: 'tue-r18', text: 'דפי חזרה עמ׳ <bdi>18</bdi>: שאלות כן/לא + שאלות מידע', act: linkAct('lesson.html#past/review', 'לדף') },
     { id: 'tue-1', text: 'חוברת עמ׳ <bdi>28-29</bdi> (תרגול שמערבב את ארבעת הזמנים)' },
     { id: 'tue-2', text: 'חוברת עמ׳ <bdi>16-19</bdi> ו-<bdi>26-27</bdi> (אוצר מילים)' },
-    { id: 'tue-5', text: 'בחינה גדולה על כל <bdi>104</bdi> המילים, ואז "מתקשה בהם"', act: { type: 'exam' } },
-  ]},
-  { date: '2026-11-04', short: 'ד׳', num: '4.11', title: 'רביעי 4.11', subtitle: 'יום המבחן, <bdi>12:00</bdi>', exam: true, tasks: [
+    { id: 'tue-5', text: 'בחינה גדולה על כל <bdi>104</bdi> המילים, ואז "מתקשה בהם" עד שהכול נקי', act: { type: 'exam' } },
     { id: 'tue-3', text: 'כתיבה: <bdi>10</bdi> משפטים עם המילים הכי קשות, כל משפט בזמן אחר' },
-    { id: 'tue-4', text: 'הבנת הנקרא: לקרוא שוב את הטקסטים של יחידה <bdi>1</bdi> בספר' },
-    { id: 'wed-1', text: 'בבוקר: סבב מהיר על "מתקשה בהם" ועל שלוש היחידות' },
-    { id: 'wed-2', text: 'לעבור על מילות הסימן של ארבעת הזמנים (למטה)' },
+    { id: 'wed-2', text: 'לסיום: לעבור על מילות הסימן של ארבעת הזמנים (למטה)' },
   ], tips: [
     ['always, usually, every day', 'Present Simple'],
     ['now, at the moment, Look!', 'Present Progressive'],
     ['yesterday, last week, ago', 'Past Simple'],
     ['while, at 9 o\'clock yesterday', 'Past Progressive'],
   ]},
+  { date: '2026-11-04', short: 'ד׳', num: '4.11', title: 'רביעי 4.11', subtitle: 'יום המבחן, <bdi>12:00</bdi>', exam: true, rest: true },
 ];
 
 const ALL_TASKS = STUDY_DAYS.flatMap(d => (d.tasks || []).map(t => ({ ...t, date: d.date, dayTitle: d.title, dayShort: d.short })));
@@ -77,10 +73,12 @@ function planTodayKey(){
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 }
 
-// יום הלימוד הראשון שמתחיל מהתאריך הנתון (מדלג על שבת); אחרי המבחן - היום האחרון
+// יום הלימוד הראשון שמתחיל מהתאריך הנתון (מדלג על שבת ועל יום המבחן);
+// אם לא נשאר יום לימוד, המשימה נשארת ביום הלימוד האחרון
 function studyDayFrom(dateKey){
-  const d = STUDY_DAYS.find(x => x.date >= dateKey && !x.rest);
-  return d ? d.date : STUDY_DAYS[STUDY_DAYS.length - 1].date;
+  const study = STUDY_DAYS.filter(x => !x.rest);
+  const d = study.find(x => x.date >= dateKey);
+  return d ? d.date : study[study.length - 1].date;
 }
 
 // באיזה יום המשימה מופיעה עכשיו
@@ -93,8 +91,12 @@ function taskHome(t){
 
 function dayView(day){
   const today = planTodayKey();
-  if(day.date < today){
-    return ALL_TASKS.filter(t => t.date === day.date).map(t => ({ t, movedTo: planDone[t.id] ? null : taskHome(t) }));
+  // יום עבר מציג את המשימות שלו; יום הלימוד הפעיל (היום, או האחרון אחרי שהימים נגמרו) מציג גם את מה שהועבר אליו
+  if(day.date < today && day.date !== studyDayFrom(today)){
+    return ALL_TASKS.filter(t => t.date === day.date).map(t => {
+      const home = taskHome(t);
+      return { t, movedTo: planDone[t.id] || home === t.date ? null : home };
+    });
   }
   return ALL_TASKS.filter(t => taskHome(t) === day.date).map(t => ({ t, carried: t.date !== day.date }))
     .sort((a, b) => (b.carried ? 1 : 0) - (a.carried ? 1 : 0));
@@ -142,7 +144,7 @@ function renderStudyCenter(){
   const strip = STUDY_DAYS.map(d => {
     const status = d.date < today ? 'past' : d.date === today ? 'today' : 'future';
     let mark;
-    if(d.rest) mark = '<span class="ds-mark">מנוחה</span>';
+    if(d.rest) mark = `<span class="ds-mark">${d.exam ? 'מבחן' : 'מנוחה'}</span>`;
     else {
       const p = dayProgress(d);
       mark = p.total && p.done === p.total
@@ -156,7 +158,9 @@ function renderStudyCenter(){
 
   let body;
   if(day.rest){
-    body = `<p class="day-rest">שבת, בלי לימוד.</p>`;
+    body = day.exam
+      ? `<p class="day-rest">יום המבחן, בלי לימוד. לישון טוב, לאכול ארוחת בוקר ולהגיע רגוע. בהצלחה!</p>`
+      : `<p class="day-rest">שבת, בלי לימוד.</p>`;
   } else {
     const view = dayView(day);
     const p = dayProgress(day);
