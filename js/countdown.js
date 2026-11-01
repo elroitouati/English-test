@@ -3,11 +3,15 @@ const EXAM_DATE = new Date(2026, 10, 4, 12, 0, 0); // יום רביעי, 4.11.20
 
 function renderCountdownCard(){
   return `
-    <div class="tile tile-hero" id="exam-countdown">
-      <span class="tile-label">עד המבחן</span>
-      <span class="hero-num"><span class="hero-int" id="cd-big">0</span><span class="hero-unit" id="cd-unit">ימים</span></span>
-      <bdi class="hero-clock" id="cd-clock">00:00:00</bdi>
-      <span class="tile-foot">רביעי <bdi>4.11</bdi> · <bdi>12:00</bdi></span>
+    <div class="tile tile-hero hero-wide" id="exam-countdown">
+      <span class="hero-main">
+        <span class="tile-label">עד המבחן</span>
+        <span class="hero-num"><span class="hero-int" id="cd-big">0</span><span class="hero-unit" id="cd-unit">ימים</span></span>
+      </span>
+      <span class="hero-side">
+        <bdi class="hero-clock" id="cd-clock">00:00:00</bdi>
+        <span class="tile-foot">רביעי <bdi>4.11</bdi> · <bdi>12:00</bdi></span>
+      </span>
     </div>`;
 }
 

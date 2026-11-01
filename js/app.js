@@ -54,8 +54,6 @@ function render(){
   try{
     if(curGroupId===null){
       app.innerHTML = renderHome();
-    } else if(curGroupId==='__plan__'){
-      app.innerHTML = renderPlanScreen();
     } else if(curGroupId==='__exam__'){
       app.innerHTML = renderExamScreen();
     } else {
@@ -68,7 +66,7 @@ function render(){
     if(curGroupId==='__exam__'){
       examSession = newExamSession();
       app.innerHTML = renderExamScreen();
-    } else if(curGroupId !== null && curGroupId !== '__plan__'){
+    } else if(curGroupId !== null){
       const g = getGroup(curGroupId);
       if(g){ g.session = newSession(g); app.innerHTML = renderPractice(g); }
       else { curGroupId = null; app.innerHTML = renderHome(); }
@@ -78,7 +76,7 @@ function render(){
     }
   }
   const screen = curGroupId === null ? 'home' : curGroupId;
-  app.dataset.screen = curGroupId === null ? 'home' : curGroupId === '__plan__' ? 'plan' : 'practice';
+  app.dataset.screen = curGroupId === null ? 'home' : 'practice';
   app.classList.toggle('screen-enter', screen !== lastScreen);
   if(screen !== lastScreen) window.scrollTo(0, 0);
   lastScreen = screen;
@@ -89,29 +87,43 @@ function render(){
 
 function renderHome(){
   const totalWords = BASE_GROUPS_SNAPSHOT.reduce((s,g)=>s+g.words.length,0);
-  const planCard = renderPlanCard();
   let html = `
   <header class="home-head">
     <bdi class="eyebrow">Mindset Plus · Unit 1</bdi>
-    <h1>אוצר מילים למבחן</h1>
-    <p class="lede"><bdi>${totalWords}</bdi> מילים · <bdi>${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות</p>
+    <h1>מרכז הלימוד</h1>
+    <p class="lede">כל מה שצריך למבחן, יום אחרי יום</p>
   </header>
-  <section class="bento${planCard ? '' : ' bento-single'}">
-    ${renderCountdownCard()}
-    ${planCard}
-  </section>
+  ${renderCountdownCard()}
+  ${renderStudyCenter()}
+  <h2 class="section-title">חומרי לימוד</h2>
   <div class="home-rows">
-    <a class="exam-row pressable" href="lesson.html">
+    <a class="exam-row pressable" href="lesson.html#present/learn">
       <span class="exam-icon exam-icon-soft">${icon('book')}</span>
       <span class="unit-body">
-        <span class="unit-name">שיעור דקדוק: הווה</span>
+        <span class="unit-name">שיעור: הווה</span>
         <span class="unit-meta"><bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi>, הסבר ותרגול</span>
+      </span>
+      <span class="row-go">${icon('forward')}</span>
+    </a>
+    <a class="exam-row pressable" href="lesson.html#past/learn">
+      <span class="exam-icon exam-icon-soft">${icon('book')}</span>
+      <span class="unit-body">
+        <span class="unit-name">שיעור: עבר</span>
+        <span class="unit-meta"><bdi>Past Simple</bdi> מול <bdi>Past Progressive</bdi>, לפי דפי החזרה</span>
+      </span>
+      <span class="row-go">${icon('forward')}</span>
+    </a>
+    <a class="exam-row pressable" href="lesson.html#past/review">
+      <span class="exam-icon exam-icon-soft">${icon('pencil')}</span>
+      <span class="unit-body">
+        <span class="unit-name">דפי חזרה: עבר</span>
+        <span class="unit-meta">עמודים <bdi>13, 14, 17, 18</bdi>, עם בדיקה והסבר</span>
       </span>
       <span class="row-go">${icon('forward')}</span>
     </a>
     ${renderExamEntryCard()}
   </div>
-  <h2 class="section-title">יחידות</h2>
+  <h2 class="section-title">כרטיסיות</h2>
   <div class="unit-list">`;
   GROUPS.forEach(g=>{
     const s = g.session;
@@ -309,7 +321,7 @@ document.getElementById('app').addEventListener('click', (e)=>{
   else if(action==='speak'){
     speakCurrentWord();
   }
-  else if(action==='open-plan') openPlan();
+  else if(action==='select-day') selectStudyDay(el.dataset.date);
   else if(action==='open-exam') openExam();
   else if(action==='open-hard') openHardGroup();
   else if(action==='exam-flip') examFlip();

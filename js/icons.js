@@ -8,6 +8,7 @@ const ICON_PATHS = {
   speaker: '<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
   stack: '<rect x="4" y="8.5" width="12.5" height="11" rx="2"/><path d="M8 5.5h10a2 2 0 0 1 2 2V16"/>',
   book: '<path d="M4 6.5c2.5-1.2 5.2-1.2 8 .8 2.8-2 5.5-2 8-.8V19c-2.5-1.2-5.2-1.2-8 .8-2.8-2-5.5-2-8-.8z"/><path d="M12 7.3v12.5"/>',
+  pencil: '<path d="M14.5 5.5l4 4L9 19H5v-4z"/><path d="M12.5 7.5l4 4"/>',
   restart: '<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/>',
 };
 

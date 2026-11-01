@@ -119,8 +119,6 @@ bdi{unicode-bidi:isolate;}
 .eyebrow{display:block;font-size:13px;font-weight:600;color:var(--accent);margin-bottom:4px;}
 .home-head h1{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:4px;}
 
-.bento{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-
 .home-rows{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
 a.exam-row, a.task-open{color:inherit;text-decoration:none;}
 a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
@@ -138,7 +136,6 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
 .exam-icon-soft{background:var(--accent-soft);color:var(--accent);}
 .exam-row .meter{margin-top:6px;}
 .row-go{flex:none;display:flex;color:var(--text-3);}
-.bento-single{grid-template-columns:1fr;}
 .tile{
   position:relative;display:flex;flex-direction:column;gap:4px;
   min-height:156px;padding:16px;border-radius:var(--r-md);
@@ -152,18 +149,14 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
 .tile-foot{margin-top:auto;font-size:13px;opacity:0.72;}
 .hero-done{font-size:32px;font-weight:600;line-height:1.2;margin-top:auto;}
 
-.tile-plan{
-  background:var(--surface);border:1px solid var(--border);box-shadow:var(--elev);
-  color:var(--text-1);
+.hero-wide{
+  flex-direction:row;align-items:flex-end;justify-content:space-between;gap:12px;
+  min-height:0;margin-bottom:12px;
 }
-.tile-plan .tile-label{color:var(--accent);opacity:1;}
-.plan-tile-day{font-size:20px;font-weight:600;line-height:1.25;}
-.plan-tile-status{font-size:13px;color:var(--text-2);}
-.tile-plan .meter{margin-top:auto;margin-inline-end:32px;}
-.tile-go{
-  position:absolute;inset-inline-end:12px;bottom:10px;
-  color:var(--text-3);display:flex;
-}
+.hero-main, .hero-side{display:flex;flex-direction:column;gap:4px;}
+.hero-side{align-items:flex-end;text-align:end;}
+.hero-side .tile-foot{margin-top:0;}
+.hero-wide .hero-done{margin-top:4px;}
 
 .section-title{font-size:20px;font-weight:600;margin-bottom:12px;}
 .unit-list{display:flex;flex-direction:column;gap:12px;}
@@ -333,21 +326,46 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
   to{transform:none;opacity:1;}
 }
 
-/* ===== Study plan ===== */
-.topbar + .lede{margin-bottom:16px;}
-.day{
-  padding:16px;margin-bottom:12px;border-radius:var(--r-md);
-  background:var(--surface);border:1px solid var(--border);box-shadow:var(--elev);
-  scroll-margin-top:16px;
+/* ===== Study centre ===== */
+.center{margin-bottom:32px;}
+.day-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-bottom:12px;}
+.ds{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  min-height:72px;padding:8px 2px;border-radius:var(--r-sm);
+  background:var(--surface);border:1px solid var(--border);
+  transition:background-color 150ms var(--ease-out), border-color 150ms var(--ease-out), transform 140ms var(--ease-out);
 }
-.day.today{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent), var(--elev);}
-.day.past{opacity:0.6;}
-.day-head{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;}
-.day-head h2{font-size:17px;font-weight:600;}
-.day-sub{font-size:13px;color:var(--text-2);}
-.day-head .chip, .day-count{margin-inline-start:auto;align-self:center;}
-.day-count{font-size:13px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums;}
-.day-rest{color:var(--text-2);}
+.ds:active{transform:scale(0.96);}
+.ds-day{font-size:17px;font-weight:600;line-height:1.2;}
+.ds-num{font-size:12px;color:var(--text-2);font-variant-numeric:tabular-nums;}
+.ds-mark{margin-top:auto;font-size:12px;font-weight:600;color:var(--text-2);font-variant-numeric:tabular-nums;display:flex;}
+.ds-done{color:var(--good);}
+.ds-done .icon{width:16px;height:16px;stroke-width:2.5;}
+.ds.past{background:transparent;}
+.ds.today{border-color:var(--accent);}
+.ds.today .ds-day{color:var(--accent);}
+.ds.exam .ds-num{color:var(--bad);font-weight:600;}
+.ds.on{background:var(--accent);border-color:var(--accent);}
+.ds.on .ds-day, .ds.on .ds-num, .ds.on .ds-mark{color:var(--on-accent);}
+
+.day-panel{
+  padding:16px;border-radius:var(--r-md);
+  background:var(--surface);border:1px solid var(--border);box-shadow:var(--elev);
+}
+.dp-label{display:block;font-size:13px;font-weight:600;color:var(--text-2);}
+.day-panel.is-today .dp-label{color:var(--accent);}
+.dp-head h2{font-size:20px;font-weight:600;line-height:1.3;}
+.dp-sub{font-size:15px;font-weight:400;color:var(--text-2);}
+.dp-progress{display:flex;align-items:center;gap:12px;margin:8px 0 4px;font-size:13px;font-weight:600;color:var(--text-2);white-space:nowrap;}
+.dp-progress .meter{flex:1;}
+.dp-group{font-size:13px;font-weight:600;color:var(--bad);margin-top:12px;}
+.dp-group-own{color:var(--text-2);}
+.dp-group + .tasks .task:first-child{border-top:0;}
+.day-rest{color:var(--text-2);margin-top:8px;}
+.task-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.task-tag{align-self:flex-start;font-size:12px;font-weight:600;color:var(--bad);background:var(--bad-soft);padding:2px 8px;border-radius:var(--r-pill);}
+.task.is-moved{opacity:0.6;}
+.task.is-moved .task-tag{color:var(--text-2);background:var(--sunken);}
 
 .tasks{list-style:none;margin:0;padding:0;}
 .task{display:flex;align-items:center;gap:8px;border-top:1px solid var(--border);}
@@ -395,7 +413,7 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
 
 /* ===== Hover (mouse only) ===== */
 @media (hover: hover) and (pointer: fine){
-  .unit:hover, .tile-plan:hover, .exam-row:hover, .day:hover{border-color:var(--border-strong);}
+  .unit:hover, .exam-row:hover, .ds:not(.on):hover{border-color:var(--border-strong);}
   .back-btn:hover, .icon-btn:hover{border-color:var(--border-strong);}
   .btn-quiet:not(:disabled):hover{color:var(--text-1);}
 }
@@ -404,5 +422,6 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
   .dot-ring, .flame-icon{animation:none;}
   .pressable:active:not(:disabled){transform:none;}
   .screen-enter > *, .index-card[data-anim], .done-mark, .task.pop .check{animation:fade 160ms ease both;}
+  .ds:active{transform:none;}
   @keyframes fade{from{opacity:0;}to{opacity:1;}}
 }
