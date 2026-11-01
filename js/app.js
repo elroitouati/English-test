@@ -312,18 +312,13 @@ function flipCard(){
   render();
 }
 function speakCurrentWord(){
-  if(!('speechSynthesis' in window)) return;
   const g = getGroup(curGroupId);
   const s = g.session;
   const w = g.words[s.queue[s.pos]];
   const rawText = s.flipped ? w[1] : w[0];
   // מסירים הערה בסוגריים בסוף (למשל "(v)") - היא לא חלק מההגייה של המילה
   const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').trim();
-  const lang = s.flipped ? 'he-IL' : 'en-US';
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = lang;
-  window.speechSynthesis.speak(utter);
+  speakText(text, s.flipped ? 'he-IL' : 'en-US');
 }
 function answer(knew){
   const s = getGroup(curGroupId).session;
@@ -389,6 +384,13 @@ document.getElementById('app').addEventListener('click', (e)=>{
   else if(action==='exam-speak') examSpeak();
   else if(action==='plan-toggle') togglePlanTask(el.dataset.task);
 });
+
+// כפתור "חזור" של אנדרואיד: סוגר תרגול פתוח במקום לצאת מהמסך
+window.appBack = function(){
+  if(curGroupId === null || curGroupId === '__cards__') return false;
+  goHome();
+  return true;
+};
 
 window.addEventListener('hashchange', () => {
   curGroupId = screenFromHash();

@@ -220,13 +220,9 @@ function examGoBack(){
   render();
 }
 function examSpeak(){
-  if(!('speechSynthesis' in window)) return;
   const s = examSession;
   const w = examWordsFlat()[s.queue[s.pos]];
   const rawText = s.flipped ? w[1] : w[0];
   const text = rawText.replace(/\s*\([^)]*\)\s*$/, '').trim();
-  window.speechSynthesis.cancel();
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = s.flipped ? 'he-IL' : 'en-US';
-  window.speechSynthesis.speak(utter);
+  speakText(text, s.flipped ? 'he-IL' : 'en-US');
 }

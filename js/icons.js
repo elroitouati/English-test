@@ -15,18 +15,30 @@ const ICON_PATHS = {
   restart: '<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4.5v4h4"/>',
 };
 
+// השמעת הגייה: באפליקציית האנדרואיד דרך מנוע הדיבור של הטלפון, בדפדפן דרך speechSynthesis
+function speakText(text, lang){
+  if(window.AndroidTTS && typeof window.AndroidTTS.speak === 'function'){ window.AndroidTTS.speak(text, lang); return; }
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = lang;
+  window.speechSynthesis.speak(utter);
+}
+
 function icon(name, cls){
   return `<svg class="icon${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_PATHS[name]}</svg>`;
 }
 
-// הלוגו: דף מבחן עם סימוני וי בעט אדום וחותמת A+, על רקע אדום. full=true לאייקון האפליקציה (רקע מלא, בלי פינות)
+// הלוגו: דף מבחן עם סימוני וי בעט אדום וחותמת A+, על רקע אדום.
+// full=true לאייקון האפליקציה (רקע מלא, בלי פינות); full='fg' לשכבה הקדמית של אייקון אנדרואיד (בלי רקע, עם שוליים)
 function logoSvg(full){
   const rows = [26, 33, 40].map((y, i) => `
       <rect x="23" y="${y - 2.6}" width="5.2" height="5.2" rx="1.2" fill="none" stroke="rgba(30,23,23,0.32)" stroke-width="1.2"/>
       ${i < 2 ? `<path d="M23.9 ${y}l1.5 1.5 2.8-3.2" fill="none" stroke="#C8202F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>` : ''}
       <line x1="31" y1="${y}" x2="${i === 1 ? 38 : 41}" y2="${y}" stroke="rgba(30,23,23,0.2)" stroke-width="2" stroke-linecap="round"/>`).join('');
-  return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <rect width="64" height="64" rx="${full ? 0 : 15}" fill="#C8202F"/>
+  const fg = full === 'fg';
+  return `<svg viewBox="${fg ? '-12.05 -16.65 93.9 93.9' : '0 0 64 64'}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    ${fg ? '' : `<rect width="64" height="64" rx="${full ? 0 : 15}" fill="#C8202F"/>`}
     <g transform="rotate(-6 32 31)">
       <rect x="19" y="12" width="26" height="36" rx="3.5" fill="#FFFDFB"/>
       <line x1="23" y1="18.5" x2="35" y2="18.5" stroke="rgba(30,23,23,0.6)" stroke-width="2.2" stroke-linecap="round"/>
