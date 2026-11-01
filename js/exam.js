@@ -77,6 +77,7 @@ function renderExamEntryCard(){
 }
 
 function openExam(){
+  rememberReturn();
   if(!isValidExamSession(examSession)) examSession = newExamSession();
   curGroupId = '__exam__';
   render();
@@ -101,7 +102,7 @@ function renderExamScreen(){
   }
   return `
     <header class="topbar">
-      <button class="back-btn pressable" data-action="home">${icon('back')}<span>יחידות</span></button>
+      <button class="back-btn pressable" data-action="home">${icon('back')}<span>${backLabel()}</span></button>
       <h1 class="topbar-title">בחינה גדולה</h1>
     </header>
     <div class="round">
@@ -143,18 +144,18 @@ function renderExamDone(){
     body = `
       <p>ידעת <bdi>${s.known}</bdi> מתוך <bdi>${total}</bdi> מילים. ה-<bdi>${hardCount}</bdi> שלא ידעת נכנסו ליחידה חדשה, "מתקשה בהם".</p>
       <button class="btn btn-primary pressable" data-action="open-hard">תרגל את "מתקשה בהם"</button>
-      <button class="btn btn-secondary pressable" data-action="home">חזרה ליחידות</button>`;
+      <button class="btn btn-secondary pressable" data-action="home">חזרה ל${backLabel()}</button>`;
   } else {
     removeHardGroup();
     body = `
       <p>ידעת את כל <bdi>${total}</bdi> המילים. אתה מוכן למבחן.</p>
-      <button class="btn btn-primary pressable" data-action="home">חזרה ליחידות</button>`;
+      <button class="btn btn-primary pressable" data-action="home">חזרה ל${backLabel()}</button>`;
   }
   examSession = null;
   saveExamSession();
   return `
     <header class="topbar">
-      <button class="back-btn pressable" data-action="home">${icon('back')}<span>יחידות</span></button>
+      <button class="back-btn pressable" data-action="home">${icon('back')}<span>${backLabel()}</span></button>
       <h1 class="topbar-title">בחינה גדולה</h1>
     </header>
     <section class="done-screen">

@@ -1,8 +1,8 @@
 {
-  "name": "כרטיסיות אוצר מילים",
-  "short_name": "כרטיסיות",
-  "description": "אפליקציית תרגול כרטיסיות ללימוד אוצר מילים באנגלית",
-  "start_url": "./index.html",
+  "name": "הכנה למבחן באנגלית",
+  "short_name": "מבחן באנגלית",
+  "description": "הכנה למבחן באנגלית: תוכנית לימוד יומית, שיעורי דקדוק, דפי חזרה וכרטיסיות אוצר מילים",
+  "start_url": "./index.html#home",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

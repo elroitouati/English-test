@@ -3,7 +3,9 @@ const BASE_GROUPS_SNAPSHOT = GROUPS.slice(); // יחידות הלימוד, לפ�
 applySavedState(GROUPS, loadSavedState());
 initExamModule(BASE_GROUPS_SNAPSHOT);
 
-let curGroupId = null; // מזהה היחידה/מסך פעיל: null = בית, אחרת מזהה יחידה
+// מסך פעיל: null = הכנה (בית), '__cards__' = כרטיסיות, '__exam__' = בחינה גדולה, אחרת מזהה יחידה
+let curGroupId = screenFromHash();
+let returnScreen = curGroupId; // לאן חוזרים מתרגול: הכנה או כרטיסיות
 
 function shuffle(arr){
   const a = arr.slice();
@@ -49,11 +51,23 @@ function ensureSession(group){
 let lastScreen = undefined; // כדי להריץ אנימציית כניסה רק כשעוברים מסך, לא בכל עדכון
 let cardAnim = ''; // 'flip' | 'next' - איך הכרטיסייה הבאה נכנסת
 
+function screenFromHash(){
+  return location.hash === '#cards' ? '__cards__' : null;
+}
+function backLabel(){
+  return returnScreen === '__cards__' ? 'כרטיסיות' : 'הכנה';
+}
+function rememberReturn(){
+  if(curGroupId === null || curGroupId === '__cards__') returnScreen = curGroupId;
+}
+
 function render(){
   const app = document.getElementById('app');
   try{
     if(curGroupId===null){
       app.innerHTML = renderHome();
+    } else if(curGroupId==='__cards__'){
+      app.innerHTML = renderCards();
     } else if(curGroupId==='__exam__'){
       app.innerHTML = renderExamScreen();
     } else {
@@ -76,7 +90,10 @@ function render(){
     }
   }
   const screen = curGroupId === null ? 'home' : curGroupId;
-  app.dataset.screen = curGroupId === null ? 'home' : 'practice';
+  const kind = curGroupId === null ? 'home' : curGroupId === '__cards__' ? 'cards' : 'practice';
+  app.dataset.screen = kind;
+  document.body.dataset.screen = kind;
+  document.getElementById('tabbar').innerHTML = renderTabbar(kind === 'cards' ? 'cards' : 'home');
   app.classList.toggle('screen-enter', screen !== lastScreen);
   if(screen !== lastScreen) window.scrollTo(0, 0);
   lastScreen = screen;
@@ -85,47 +102,72 @@ function render(){
   updateCountdownDisplay();
 }
 
+function loadLessonScores(){
+  try{ return JSON.parse(localStorage.getItem('lessonScores_v1')) || {}; }catch(e){ return {}; }
+}
+
+// "מה יש במבחן": ארבעת חלקי המבחן לפי דף החומר, עם ההתקדמות שלך בכל אחד
+function renderExamMap(){
+  const words = BASE_GROUPS_SNAPSHOT.reduce((s,g)=>s+g.words.length,0);
+  const practiced = BASE_GROUPS_SNAPSHOT.filter(g => g.practiceCount > 0).length;
+  const scores = loadLessonScores();
+  const grammarKeys = ['present-grammar', 'r13a', 'r13b', 'r14a', 'r14b', 'r17a', 'r17b', 'r18a', 'r18b'];
+  const grammarDone = grammarKeys.filter(k => scores[k]).length;
+  const tile = (o) => `
+    <${o.href ? `a href="${o.href}"` : o.action ? `button data-action="${o.action}"` : 'div'} class="map-tile${o.href || o.action ? ' pressable' : ''}">
+      <span class="map-top"><span class="map-icon">${icon(o.icon)}</span><span class="map-name">${o.name}</span></span>
+      <span class="map-stat">${o.stat}</span>
+      <span class="map-sub">${o.sub}</span>
+      ${o.meter !== undefined ? `<span class="meter"><span style="width:${o.meter}%"></span></span><span class="map-progress">${o.progress}</span>` : `<span class="map-progress map-tip">${o.progress}</span>`}
+    </${o.href ? 'a' : o.action ? 'button' : 'div'}>`;
+  return `<div class="exam-map">
+    ${tile({ icon: 'stack', name: 'אוצר מילים', stat: `<span class="map-int">${words}</span> מילים`, sub: 'כל המילים בעמ׳ <bdi>32</bdi> בספר',
+      meter: practiced / BASE_GROUPS_SNAPSHOT.length * 100, progress: `<bdi>${practiced}/${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות תורגלו`, href: '#cards' })}
+    ${tile({ icon: 'book', name: 'דקדוק', stat: '<span class="map-int">4</span> זמנים', sub: 'הווה ועבר, <bdi>Simple</bdi> ו-<bdi>Progressive</bdi>',
+      meter: grammarDone / grammarKeys.length * 100, progress: `<bdi>${grammarDone}/${grammarKeys.length}</bdi> תרגולים הושלמו`, href: 'lesson.html' })}
+    ${tile({ icon: 'doc', name: 'הבנת הנקרא', stat: 'טקסט חדש', sub: 'על הנושא והמילים של היחידה',
+      progress: 'הכנה: לשלוט במילים ולקרוא שוב את הטקסטים של יחידה <bdi>1</bdi>' })}
+    ${tile({ icon: 'pencil', name: 'כתיבה', stat: 'משפטים', sub: 'עם מילים מאוצר המילים',
+      progress: 'תרגול: משפטים משלך בדפי החזרה', href: 'lesson.html#past/review/r14b' })}
+  </div>`;
+}
+
+// "להמשיך מאיפה שעצרת": תרגול פתוח שכבר התחלת
+function renderResume(){
+  if(examSession && examSession.pos > 0){
+    return resumeRow('open-exam', '', 'בחינה גדולה', `<bdi>${examSession.pos}/${examSession.queue.length}</bdi>`);
+  }
+  const g = GROUPS.find(x => x.session && (x.session.pos > 0 || x.session.roundLabel > 1));
+  if(!g) return '';
+  return resumeRow('open', g.id, `<bdi>${g.label}</bdi>`, `ידעת <bdi>${g.session.known}/${g.words.length}</bdi>`);
+}
+function resumeRow(action, id, name, meta){
+  return `<button class="resume pressable" data-action="${action}"${id ? ` data-id="${id}"` : ''}>
+    <span class="resume-icon">${icon('play')}</span>
+    <span class="unit-body"><span class="resume-label">להמשיך מאיפה שעצרת</span><span class="unit-name">${name}</span></span>
+    <span class="chip">${meta}</span>
+  </button>`;
+}
+
 function renderHome(){
-  const totalWords = BASE_GROUPS_SNAPSHOT.reduce((s,g)=>s+g.words.length,0);
-  let html = `
-  <header class="home-head">
-    <bdi class="eyebrow">Mindset Plus · Unit 1</bdi>
-    <h1>מרכז הלימוד</h1>
-    <p class="lede">כל מה שצריך למבחן, יום אחרי יום</p>
+  return `
+  <header class="brand">
+    <span class="brand-mark">${logoSvg(false)}</span>
+    <span class="brand-text">
+      <bdi class="eyebrow">Mindset Plus · Unit 1</bdi>
+      <h1>הכנה למבחן באנגלית</h1>
+    </span>
   </header>
   ${renderCountdownCard()}
-  ${renderStudyCenter()}
-  <h2 class="section-title">חומרי לימוד</h2>
-  <div class="home-rows">
-    <a class="exam-row pressable" href="lesson.html#present/learn">
-      <span class="exam-icon exam-icon-soft">${icon('book')}</span>
-      <span class="unit-body">
-        <span class="unit-name">שיעור: הווה</span>
-        <span class="unit-meta"><bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi>, הסבר ותרגול</span>
-      </span>
-      <span class="row-go">${icon('forward')}</span>
-    </a>
-    <a class="exam-row pressable" href="lesson.html#past/learn">
-      <span class="exam-icon exam-icon-soft">${icon('book')}</span>
-      <span class="unit-body">
-        <span class="unit-name">שיעור: עבר</span>
-        <span class="unit-meta"><bdi>Past Simple</bdi> מול <bdi>Past Progressive</bdi>, לפי דפי החזרה</span>
-      </span>
-      <span class="row-go">${icon('forward')}</span>
-    </a>
-    <a class="exam-row pressable" href="lesson.html#past/review">
-      <span class="exam-icon exam-icon-soft">${icon('pencil')}</span>
-      <span class="unit-body">
-        <span class="unit-name">דפי חזרה: עבר</span>
-        <span class="unit-meta">עמודים <bdi>13, 14, 17, 18</bdi>, עם בדיקה והסבר</span>
-      </span>
-      <span class="row-go">${icon('forward')}</span>
-    </a>
-    ${renderExamEntryCard()}
-  </div>
-  <h2 class="section-title">כרטיסיות</h2>
-  <div class="unit-list">`;
-  GROUPS.forEach(g=>{
+  ${renderResume()}
+  <h2 class="section-title">מה יש במבחן</h2>
+  ${renderExamMap()}
+  <h2 class="section-title">איך מתכוננים: התוכנית שלך</h2>
+  ${renderStudyCenter()}`;
+}
+
+function renderUnitList(){
+  return `<div class="unit-list">${GROUPS.map(g=>{
     const s = g.session;
     let meta = `<bdi>${g.words.length}</bdi> מילים`;
     let meter = '';
@@ -134,7 +176,7 @@ function renderHome(){
       meta = `בתהליך · ידעת <bdi>${s.known}/${g.words.length}</bdi>`;
       meter = `<span class="meter"><span style="width:${pct}%"></span></span>`;
     }
-    html += `<button class="unit pressable" data-action="open" data-id="${g.id}">
+    return `<button class="unit pressable" data-action="open" data-id="${g.id}">
       ${renderFlameBadge(g.practiceCount, g.dotLabel)}
       <span class="unit-body">
         <bdi class="unit-name">${g.label}</bdi>
@@ -143,9 +185,19 @@ function renderHome(){
       </span>
       <span class="chip">תרגול <bdi>${g.practiceCount}</bdi></span>
     </button>`;
-  });
-  html += `</div>`;
-  return html;
+  }).join('')}</div>`;
+}
+
+function renderCards(){
+  const totalWords = BASE_GROUPS_SNAPSHOT.reduce((s,g)=>s+g.words.length,0);
+  return `
+  <header class="page-head">
+    <h1>כרטיסיות</h1>
+    <p class="lede"><bdi>${totalWords}</bdi> מילים מעמ׳ <bdi>32</bdi> · <bdi>${BASE_GROUPS_SNAPSHOT.length}</bdi> יחידות</p>
+  </header>
+  <div class="home-rows">${renderExamEntryCard()}</div>
+  <h2 class="section-title">יחידות</h2>
+  ${renderUnitList()}`;
 }
 
 // מפריד את סימון חלק הדיבר בסוף המילה (למשל "(n, v)") כדי להציג אותו קטן יותר
@@ -187,7 +239,7 @@ function renderPractice(g){
   }
   return `
     <header class="topbar">
-      <button class="back-btn pressable" data-action="home">${icon('back')}<span>יחידות</span></button>
+      <button class="back-btn pressable" data-action="home">${icon('back')}<span>${backLabel()}</span></button>
       <bdi class="topbar-title">${g.label}</bdi>
     </header>
     <div class="round">
@@ -224,7 +276,7 @@ function renderDone(g){
   g.session = null;
   return `
     <header class="topbar">
-      <button class="back-btn pressable" data-action="home">${icon('back')}<span>יחידות</span></button>
+      <button class="back-btn pressable" data-action="home">${icon('back')}<span>${backLabel()}</span></button>
       <bdi class="topbar-title">${g.label}</bdi>
     </header>
     <section class="done-screen">
@@ -232,17 +284,18 @@ function renderDone(g){
       <h2>ידעת את כל המילים ביחידה</h2>
       <p>זה תרגול מספר <bdi>${g.practiceCount}</bdi> על היחידה הזאת.</p>
       <button class="btn btn-primary pressable" data-action="restart" data-id="${g.id}">${icon('restart')}<span>עוד תרגול על היחידה</span></button>
-      <button class="btn btn-secondary pressable" data-action="home">חזרה ליחידות</button>
+      <button class="btn btn-secondary pressable" data-action="home">חזרה ל${backLabel()}</button>
     </section>
   `;
 }
 
 function openGroup(id){
+  rememberReturn();
   curGroupId = id;
   render();
 }
 function goHome(){
-  curGroupId = null;
+  curGroupId = returnScreen;
   render();
 }
 function restartGroup(id){
@@ -335,6 +388,12 @@ document.getElementById('app').addEventListener('click', (e)=>{
   }
   else if(action==='exam-speak') examSpeak();
   else if(action==='plan-toggle') togglePlanTask(el.dataset.task);
+});
+
+window.addEventListener('hashchange', () => {
+  curGroupId = screenFromHash();
+  returnScreen = curGroupId;
+  render();
 });
 
 render();

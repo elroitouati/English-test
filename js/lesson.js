@@ -967,7 +967,7 @@ function renderPage(keepScroll){
     html = back + renderQuiz(key);
   }
   panel.innerHTML = html;
-  document.title = `שיעור דקדוק - ${TOPICS[r.topic].label}`;
+  document.title = `שיעורים: ${TOPICS[r.topic].label} - הכנה למבחן באנגלית`;
   if(!keepScroll) window.scrollTo(0, 0);
 }
 

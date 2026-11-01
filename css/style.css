@@ -115,9 +115,65 @@ bdi{unicode-bidi:isolate;}
 .meter > span{display:block;height:100%;border-radius:inherit;background:var(--accent);}
 
 /* ===== Home ===== */
-.home-head{margin-bottom:20px;}
-.eyebrow{display:block;font-size:13px;font-weight:600;color:var(--accent);margin-bottom:4px;}
-.home-head h1{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:4px;}
+.page-head{margin-bottom:20px;}
+.page-head h1{font-size:32px;font-weight:600;line-height:1.2;margin-bottom:4px;}
+.eyebrow{display:block;font-size:13px;font-weight:600;color:var(--accent);margin-bottom:2px;}
+
+/* Brand header */
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.brand-mark{flex:none;width:56px;height:56px;display:block;}
+.brand-mark svg{display:block;width:100%;height:100%;border-radius:15px;box-shadow:0 6px 16px rgba(39,71,217,0.25);}
+.brand-text{min-width:0;}
+.brand h1{font-size:28px;font-weight:600;line-height:1.15;}
+
+/* Resume */
+.resume{
+  display:flex;align-items:center;gap:12px;width:100%;margin-bottom:12px;
+  padding:12px 16px;border-radius:var(--r-md);
+  background:var(--accent-soft);color:var(--text-1);
+}
+.resume-icon{flex:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:var(--on-accent);}
+.resume-icon .icon{width:18px;height:18px;fill:currentColor;stroke:none;}
+.resume-label{font-size:13px;font-weight:600;color:var(--accent);}
+.resume .chip{background:var(--surface);}
+
+/* What's on the exam */
+.exam-map{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+.map-tile{
+  display:flex;flex-direction:column;gap:2px;min-height:168px;padding:14px;
+  border-radius:var(--r-md);background:var(--surface);border:1px solid var(--border);box-shadow:var(--elev);
+  color:var(--text-1);text-decoration:none;text-align:start;
+}
+.map-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.map-icon{flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);color:var(--accent);}
+.map-icon .icon{width:18px;height:18px;}
+.map-name{font-size:15px;font-weight:600;}
+.map-stat{font-size:17px;font-weight:600;line-height:1.2;}
+.map-int{font-size:28px;font-variant-numeric:tabular-nums;}
+.map-sub{font-size:13px;color:var(--text-2);line-height:1.4;}
+.map-tile .meter{margin-top:auto;}
+.map-progress{font-size:12px;font-weight:600;color:var(--text-2);margin-top:6px;line-height:1.4;}
+.map-tip{margin-top:auto;padding-top:6px;color:var(--accent);font-weight:400;}
+
+/* Bottom tab bar */
+.tabbar{
+  position:fixed;inset-inline:0;bottom:0;z-index:20;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  padding:6px max(8px, calc(50% - 252px)) calc(env(safe-area-inset-bottom, 0px) + 6px);
+  background:var(--surface);border-top:1px solid var(--border);
+}
+.tb-item{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;
+  font-size:12px;font-weight:600;color:var(--text-2);text-decoration:none;
+  user-select:none;-webkit-user-select:none;touch-action:manipulation;
+}
+.tb-icon{display:flex;align-items:center;justify-content:center;width:56px;height:30px;border-radius:var(--r-pill);transition:background-color 150ms var(--ease-out);}
+.tb-icon .icon{width:22px;height:22px;}
+.tb-item.on{color:var(--accent);}
+.tb-item.on .tb-icon{background:var(--accent-soft);}
+.tb-item:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;border-radius:var(--r-sm);}
+body:not([data-screen="practice"]) .wrap{padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 96px);}
+body[data-screen="practice"] .tabbar{display:none;}
 
 .home-rows{display:flex;flex-direction:column;gap:12px;margin-bottom:32px;}
 a.exam-row, a.task-open{color:inherit;text-decoration:none;}
@@ -413,7 +469,8 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
 
 /* ===== Hover (mouse only) ===== */
 @media (hover: hover) and (pointer: fine){
-  .unit:hover, .exam-row:hover, .ds:not(.on):hover{border-color:var(--border-strong);}
+  .unit:hover, .exam-row:hover, .ds:not(.on):hover, a.map-tile:hover{border-color:var(--border-strong);}
+  .tb-item:not(.on):hover{color:var(--text-1);}
   .back-btn:hover, .icon-btn:hover{border-color:var(--border-strong);}
   .btn-quiet:not(:disabled):hover{color:var(--text-1);}
 }

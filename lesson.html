@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>שיעורי דקדוק</title>
+<title>שיעורים - הכנה למבחן באנגלית</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -18,15 +18,16 @@
 </head>
 <body>
 <main class="wrap lesson">
-  <header class="topbar">
-    <a class="back-btn pressable" href="index.html" id="back-link"></a>
-    <h1 class="topbar-title">שיעורי דקדוק</h1>
+  <header class="page-head">
+    <h1>שיעורים</h1>
+    <p class="lede">הסבר, דוגמאות ותרגול לכל חלק בדקדוק של המבחן</p>
   </header>
   <div id="nav"></div>
   <div id="panel"></div>
 </main>
+<nav class="tabbar" id="tabbar" aria-label="ניווט ראשי"></nav>
 <script src="js/icons.js"></script>
-<script>document.getElementById('back-link').innerHTML = icon('back') + '<span>למרכז הלימוד</span>';</script>
+<script>document.getElementById('tabbar').innerHTML = renderTabbar('lessons');</script>
 <script src="js/lesson.js"></script>
 </body>
 </html>
