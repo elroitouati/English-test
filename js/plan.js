@@ -15,9 +15,9 @@ const STUDY_DAYS = [
   { date: '2026-11-01', short: 'א׳', num: '1.11', title: 'ראשון 1.11', subtitle: 'הווה', tasks: [
     { id: 'sun-1', text: 'שיעור: <bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi> (אותם כללים כמו בספר עמ׳ <bdi>226-227</bdi>)', act: linkAct('lesson.html#present/learn', 'לשיעור') },
     { id: 'sun-2', text: 'תרגול דקדוק הווה באפליקציה (<bdi>20</bdi> שאלות)', act: linkAct('lesson.html#present/grammar', 'לתרגול') },
-    { id: 'sun-2w', text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק)', where: 'בחוברת' },
+    { id: 'sun-2w', optional: true, text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק)', where: 'בחוברת' },
     { id: 'sun-3', text: 'תרגול מילים במשפטים באפליקציה (<bdi>20</bdi> שאלות)', act: linkAct('lesson.html#words/vocab', 'לתרגול') },
-    { id: 'sun-3w', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים)', where: 'בחוברת' },
+    { id: 'sun-3w', optional: true, text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים)', where: 'בחוברת' },
     { id: 'sun-4', text: 'שוב <bdi>Review - Part 1</bdi>, עד שהכול נקי', act: unitAct('review-part-1') },
     { id: 'sun-5', text: 'סבב ראשון על <bdi>Review - Part 2</bdi>', act: unitAct('review-part-2') },
   ]},
@@ -25,16 +25,16 @@ const STUDY_DAYS = [
     { id: 'mon-1', text: 'שיעור: <bdi>Past Simple</bdi> מול <bdi>Past Progressive</bdi> (דפי חזרה עמ׳ <bdi>12</bdi>)', act: linkAct('lesson.html#past/learn', 'לשיעור') },
     { id: 'mon-r13', text: 'דף חזרה <bdi>5</bdi>, עמ׳ <bdi>13</bdi>: בחירת הזמן הנכון + <bdi>when / while</bdi> (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/review', 'לדף') },
     { id: 'mon-r14', text: 'דפי חזרה עמ׳ <bdi>14</bdi>: השלמת פעלים + משפטים משלך (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/review', 'לדף') },
-    { id: 'mon-2', text: 'חוברת עמ׳ <bdi>20-22</bdi> (דקדוק)', where: 'בחוברת' },
-    { id: 'mon-3', text: 'חוברת עמ׳ <bdi>12-15</bdi> (אוצר מילים)', where: 'בחוברת' },
+    { id: 'mon-2', optional: true, text: 'חוברת עמ׳ <bdi>20-22</bdi> (דקדוק)', where: 'בחוברת' },
+    { id: 'mon-3', optional: true, text: 'חוברת עמ׳ <bdi>12-15</bdi> (אוצר מילים)', where: 'בחוברת' },
     { id: 'mon-4', text: '<bdi>Review - Part 2</bdi> עד שהכול נקי, ועוד סבב קצר על <bdi>Speak Your Mind</bdi>', act: unitAct('review-part-2') },
     { id: 'tue-4', text: 'הבנת הנקרא: לקרוא שוב את הטקסטים של יחידה <bdi>1</bdi>', where: 'בספר' },
   ]},
   { date: '2026-11-03', short: 'ג׳', num: '3.11', title: 'שלישי 3.11', subtitle: 'יום אחרון: שאלות בעבר וחזרה על הכול', tasks: [
     { id: 'tue-r17', text: 'שאלות בעבר: חלק 6 בשיעור + דף חזרה <bdi>7</bdi>, עמ׳ <bdi>16-17</bdi> (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/learn', 'לשיעור') },
     { id: 'tue-r18', text: 'דפי חזרה עמ׳ <bdi>18</bdi>: שאלות כן/לא + שאלות מידע (באפליקציה או על הדף, אותם תרגילים)', act: linkAct('lesson.html#past/review', 'לדף') },
-    { id: 'tue-1', text: 'חוברת עמ׳ <bdi>28-29</bdi> (תרגול שמערבב את ארבעת הזמנים)', where: 'בחוברת' },
-    { id: 'tue-2', text: 'חוברת עמ׳ <bdi>16-19</bdi> ו-<bdi>26-27</bdi> (אוצר מילים)', where: 'בחוברת' },
+    { id: 'tue-1', optional: true, text: 'חוברת עמ׳ <bdi>28-29</bdi> (תרגול שמערבב את ארבעת הזמנים)', where: 'בחוברת' },
+    { id: 'tue-2', optional: true, text: 'חוברת עמ׳ <bdi>16-19</bdi> ו-<bdi>26-27</bdi> (אוצר מילים)', where: 'בחוברת' },
     { id: 'tue-5', text: 'בחינה גדולה על כל <bdi>104</bdi> המילים, ואז "מתקשה בהם" עד שהכול נקי', act: { type: 'exam' } },
     { id: 'tue-3', text: 'כתיבה: <bdi>10</bdi> משפטים עם המילים הכי קשות, כל משפט בזמן אחר', where: 'במחברת' },
     { id: 'wed-2', text: 'לסיום: לעבור על מילות הסימן של ארבעת הזמנים (למטה)' },
@@ -83,10 +83,11 @@ function studyDayFrom(dateKey){
   return d ? d.date : study[study.length - 1].date;
 }
 
-// באיזה יום המשימה מופיעה עכשיו
+// באיזה יום המשימה מופיעה עכשיו. משימת רשות שלא בוצעה נשארת ביום שלה ולא עוברת הלאה.
 function taskHome(t){
   const doneOn = planDone[t.id];
   if(doneOn) return doneOn > t.date ? studyDayFrom(doneOn) : t.date;
+  if(t.optional) return t.date;
   const today = planTodayKey();
   return t.date >= today ? t.date : studyDayFrom(today);
 }
@@ -104,8 +105,9 @@ function dayView(day){
     .sort((a, b) => (b.carried ? 1 : 0) - (a.carried ? 1 : 0));
 }
 
+// ההתקדמות סופרת רק משימות חובה
 function dayProgress(day){
-  const view = dayView(day);
+  const view = dayView(day).filter(v => !v.t.optional);
   return { done: view.filter(v => planDone[v.t.id]).length, total: view.length };
 }
 
@@ -128,7 +130,7 @@ function renderTaskRow(v){
   let tag = '';
   if(v.carried) tag = `<span class="task-tag">הועבר מיום ${t.dayShort}</span>`;
   else if(v.movedTo) tag = `<span class="task-tag">הועבר ליום ${shortOf(v.movedTo)}</span>`;
-  return `<li class="task${done ? ' is-done' : ''}${v.movedTo ? ' is-moved' : ''}${pop}">
+  return `<li class="task${done ? ' is-done' : ''}${v.movedTo ? ' is-moved' : ''}${t.optional ? ' is-optional' : ''}${pop}">
     <button class="task-toggle" data-action="plan-toggle" data-task="${t.id}" aria-pressed="${done}">
       <span class="check">${icon('check')}</span>
       <span class="task-body"><span class="task-text">${t.text}</span>${tag}</span>
@@ -167,12 +169,14 @@ function renderStudyCenter(){
     const view = dayView(day);
     const p = dayProgress(day);
     const carried = view.filter(v => v.carried);
-    const own = view.filter(v => !v.carried);
+    const own = view.filter(v => !v.carried && !v.t.optional);
+    const extra = view.filter(v => !v.carried && v.t.optional);
     const pct = p.total ? Math.round(p.done / p.total * 100) : 0;
     body = `
       <div class="dp-progress"><bdi>${p.done}/${p.total}</bdi> משימות<span class="meter"><span style="width:${pct}%"></span></span></div>
       ${carried.length ? `<p class="dp-group">משימות שהועברו מימים קודמים</p><ul class="tasks">${carried.map(renderTaskRow).join('')}</ul>` : ''}
       ${own.length ? `${carried.length ? '<p class="dp-group dp-group-own">של היום</p>' : ''}<ul class="tasks">${own.map(renderTaskRow).join('')}</ul>` : ''}
+      ${extra.length ? `<p class="dp-group dp-group-own">רשות, אם יש זמן: כמה תרגילים מכל עמוד בחוברת</p><ul class="tasks">${extra.map(renderTaskRow).join('')}</ul>` : ''}
       ${!view.length ? '<p class="day-rest">אין משימות ליום הזה.</p>' : ''}
       ${day.tips ? `<dl class="tips">${day.tips.map(([w, tense]) => `<div class="tip"><dt dir="ltr">${w}</dt><dd dir="ltr">${tense}</dd></div>`).join('')}</dl>` : ''}`;
   }

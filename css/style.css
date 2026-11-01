@@ -452,6 +452,7 @@ a.task-open{display:inline-flex;align-items:center;color:var(--accent);}
   background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;
 }
 
+.task.is-optional:not(.is-done) .check{border-style:dashed;}
 .task-where{
   flex:none;display:inline-flex;align-items:center;min-height:32px;padding:0 10px;border-radius:var(--r-sm);
   border:1px dashed var(--border-strong);color:var(--text-2);font-size:13px;font-weight:600;
