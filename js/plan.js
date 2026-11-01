@@ -8,9 +8,9 @@ const STUDY_PLAN = [
   ]},
   { date: '2026-10-31', title: 'שבת 31.10', rest: true },
   { date: '2026-11-01', title: 'ראשון 1.11', subtitle: 'הווה', tasks: [
-    { id: 'sun-1', text: 'לקרוא את הכללים של <bdi>Present Simple</bdi> ו-<bdi>Present Progressive</bdi> בספר, עמ׳ <bdi>226-227</bdi>' },
-    { id: 'sun-2', text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק)' },
-    { id: 'sun-3', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים)' },
+    { id: 'sun-1', text: 'לקרוא את הכללים של <bdi>Present Simple</bdi> ו-<bdi>Present Progressive</bdi> בספר, עמ׳ <bdi>226-227</bdi>', link: ['lesson.html#learn', 'לשיעור'] },
+    { id: 'sun-2', text: 'חוברת עמ׳ <bdi>9-11</bdi> (דקדוק)', link: ['lesson.html#grammar', 'לתרגול'] },
+    { id: 'sun-3', text: 'חוברת עמ׳ <bdi>4-8</bdi> (אוצר מילים)', link: ['lesson.html#vocab', 'לתרגול'] },
     { id: 'sun-4', text: 'שוב <bdi>Review - Part 1</bdi>, עד שהכול נקי', unit: 'review-part-1' },
     { id: 'sun-5', text: 'סבב ראשון על <bdi>Review - Part 2</bdi>', unit: 'review-part-2' },
   ]},
@@ -129,6 +129,7 @@ function renderPlanScreen(){
           </button>
           ${t.unit ? `<button class="task-open pressable" data-action="open" data-id="${t.unit}">לתרגול</button>` : ''}
           ${t.exam ? `<button class="task-open pressable" data-action="open-exam">לבחינה</button>` : ''}
+          ${t.link ? `<a class="task-open pressable" href="${t.link[0]}">${t.link[1]}</a>` : ''}
         </li>`;
       });
       html += `</ul>`;

@@ -100,7 +100,17 @@ function renderHome(){
     ${renderCountdownCard()}
     ${planCard}
   </section>
-  ${renderExamEntryCard()}
+  <div class="home-rows">
+    <a class="exam-row pressable" href="lesson.html">
+      <span class="exam-icon exam-icon-soft">${icon('book')}</span>
+      <span class="unit-body">
+        <span class="unit-name">שיעור דקדוק: הווה</span>
+        <span class="unit-meta"><bdi>Present Simple</bdi> מול <bdi>Present Progressive</bdi>, הסבר ותרגול</span>
+      </span>
+      <span class="row-go">${icon('forward')}</span>
+    </a>
+    ${renderExamEntryCard()}
+  </div>
   <h2 class="section-title">יחידות</h2>
   <div class="unit-list">`;
   GROUPS.forEach(g=>{
